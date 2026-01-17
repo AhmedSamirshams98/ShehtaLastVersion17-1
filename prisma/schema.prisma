@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") 
+}
+
+model appUsers {
+  id         Int      @id @default(autoincrement())
+  google_id  String?  @unique
+  email      String   @unique
+  name       String?
+  picture    String?
+  role       String   @default("user")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+model car_images {
+  id        Int    @id @default(autoincrement())
+  image_url String
+  car_id    Int
+  cars      cars   @relation(fields: [car_id], references: [id], onDelete: Cascade)
+
+  @@map("car_images")
+}
+enum CarStatus {
+  available    // متاحة
+  unavailable  // غير متاحة
+}
+
+model cars {
+  id          Int          @id @default(autoincrement())
+  brand       String
+  model       String
+  year        Int         // أضف هذا الحقل
+  condition   String     // وأضف هذا الحقل
+  description String?
+  kilometers  Int?
+  status      CarStatus     @default(available)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  car_images  car_images[]
+  
+
+  @@map("cars")
+}
+model forms {
+  id              Int      @id @default(autoincrement())
+  customer_name   String
+  phone_number    String
+  car_brand       String
+  car_model       String
+  car_description String?
+  status          String   @default("pending")
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  
+  // No relations - independent table
+
+  @@map("forms")
+}

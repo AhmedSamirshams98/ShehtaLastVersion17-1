@@ -1,0 +1,129 @@
+/* sliderStyles.css */
+.slider-container {
+  --slider-slide-spacing: 1rem;
+  --slider-slide-size: 100%;
+  direction: ltr;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  height: 100%;
+}
+
+.slider-viewport {
+  overflow: hidden;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y pinch-zoom;
+}
+
+.slider-slide {
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 var(--slider-slide-size);
+  height: 100%;
+  width: 100%;
+}
+
+.slider-slide-number {
+  border-radius: 1.8rem;
+  font-size: 4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--slider-slide-height);
+  user-select: none;
+}
+
+.slider-controls {
+  display: flex;
+}
+
+.slider-nav-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.slider-nav-button {
+  -webkit-tap-highlight-color: rgba(
+    var(--slider-text-high-contrast-rgb-value),
+    0.5
+  );
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: inset 0 0 0 0.2rem var(--slider-detail-medium-contrast);
+  width: 3.6rem;
+  height: 3.6rem;
+  z-index: 1;
+  border-radius: 50%;
+  color: var(--slider-text-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-nav-button-icon {
+  width: 28%;
+  height: 28%;
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  gap: 4px;
+}
+
+.slider-dot {
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.slider-dot:after {
+  border: none;
+  box-shadow: inset 0 0 0 0.2rem var(--slider-detail-medium-contrast);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  content: "";
+  background-color: #5b5b5b;
+}
+
+.slider-dot--active:after {
+  border: none;
+  box-shadow: inset 0 0 0 0.2rem var(--slider-text-body);
+  background-color: #fdb800;
+}
