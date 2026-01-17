@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } } // النوع الصحيح
+) {
   try {
     const { role } = await req.json();
-    const id = parseInt(params.id);
+    const id = parseInt(context.params.id);
 
     if (!role) {
       return NextResponse.json({ error: "الدور مطلوب" }, { status: 400 });
@@ -22,9 +25,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } } // النوع الصحيح
+) {
   try {
-    const id = parseInt(params.id);
+    const id = parseInt(context.params.id);
 
     await prisma.appUsers.delete({ where: { id } });
     return NextResponse.json({ success: true });
