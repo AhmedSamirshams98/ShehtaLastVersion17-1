@@ -1,8 +1,12 @@
 // app/api/cars/route.ts
 import { NextResponse } from "next/server";
+
+
 import prisma from "@/lib/prisma";
 import fs from "fs";
 import path from "path";
+
+type CarStatusType = "available" | "unavailable";
 
 export async function GET() {
   try {
@@ -36,7 +40,9 @@ export async function POST(request: Request) {
     const condition = formData.get("condition") as string;
     const description = formData.get("description") as string;
     const kilometers = parseInt(formData.get("kilometers") as string) || 0;
-    const status = formData.get("status") as string;
+        const statusStr = formData.get("status")?.toString();
+
+    const carStatus: CarStatusType = statusStr === "unavailable" ? "unavailable" : "available";
 
     // Validate required fields
     if (!brand || !model) {
@@ -55,9 +61,10 @@ export async function POST(request: Request) {
       fs.chmodSync(uploadDir, 0o755);
     }
 
+
     // Create car record first
     const car = await prisma.cars.create({
-      data: { brand, model, year, condition, description, kilometers, status },
+      data: { brand, model, year, condition, description, kilometers,  status: carStatus },
     });
 
     const files = formData.getAll("images") as File[];
