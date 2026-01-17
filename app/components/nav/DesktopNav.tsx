@@ -42,7 +42,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ isDashboard = false }) => {
     };
 
     fetchSession();
-  }, []);
+  }, [router]);
 
   const logout = async () => {
     try {
