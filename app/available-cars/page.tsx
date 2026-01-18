@@ -56,12 +56,12 @@ const AvailableCarsPage = () => {
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-10 mt-10">
-        <h1 className="text-[4vw] md:text-[3vw] font-bold">
+        <h1 className="text-[4vw] md:text-[3vw] lg:text-[1.5vw] font-bold">
           السيارات المتاحة 🚗
         </h1>
 
         {/* Dropdown */}
-        <div className="relative w-[40%] md:w-[25%]">
+        <div className="relative w-[40%] md:w-[20%] lg:w-[15%]">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="w-full bg-white border rounded-lg p-2 flex justify-between items-center"
@@ -108,7 +108,7 @@ const AvailableCarsPage = () => {
       </div>
 
       {/* Cars Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => {
             const slides = car.images.map((img, i) => (

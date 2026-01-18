@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
-import backgroundimage from "../../../public/images/backgroundimage.png";
+import backgroundimage from "../../../public/images/backgroundimage.jpg";
 import { usePathname } from "next/navigation";
 
 const Nav = () => {
@@ -45,7 +45,7 @@ const Nav = () => {
   return (
     <header
       ref={navRef}
-      className="fixed top-0  text-white z-[90] px-[8%]  lg:px-0   py-[1%] w-full flex items-center justify-center transition-all duration-300"
+      className="fixed top-0  text-white z-[90] px-[4%]  lg:px-0   py-[1%] w-full flex items-center justify-center transition-all duration-300"
       style={{
         direction: "rtl",
         backgroundImage: !isHome ? `url(${backgroundimage.src})` : "none",

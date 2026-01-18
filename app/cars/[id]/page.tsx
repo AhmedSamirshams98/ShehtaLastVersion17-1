@@ -97,7 +97,7 @@ const CarDetailsPage = () => {
       </h1>
 
       {/* معلومات السيارة */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full" dir="rtl">
         <div className="flex flex-col gap-2">
           <label className="text-[4vw] md:text-[1.2vw] font-medium">
             ماركة السيارة :
@@ -167,7 +167,7 @@ const CarDetailsPage = () => {
               rel="noopener noreferrer"
             >
               <Image
-                className="w-[8vw] md:w-[4vw] lg:w-[2vw] cursor-pointer"
+                className="w-[6vw] md:w-[4vw] lg:w-[2vw] cursor-pointer"
                 src={whats}
                 alt="whatsapp"
               />

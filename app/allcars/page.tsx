@@ -6,8 +6,12 @@ import phone from "../../public/images/phonenumber.svg";
 import { useCarStore } from "@/stores/carStore";
 import Link from "next/link";
 import EmblaCarouselSlider from "../components/emblaCarouselSlider/EmblaCarouselSlider";
+import Router from "next/router";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+
   const { cars, fetchCars } = useCarStore();
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,7 +23,7 @@ const Page = () => {
       window.location.href = "tel:+201000030607";
     } else {
       alert(
-        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201003060607"
+        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201003060607",
       );
     }
   }
@@ -31,7 +35,7 @@ const Page = () => {
 
   // الحصول على جميع الـ brands الفريدة
   const uniqueBrands = Array.from(new Set(cars.map((car) => car.brand))).filter(
-    (brand) => brand
+    (brand) => brand,
   );
 
   // تصفية السيارات حسب الـ brand المختار
@@ -59,19 +63,19 @@ const Page = () => {
     >
       {/* Header with Filter Dropdown */}
       <div className="flex flex-row justify-between items-center mb-[6%] mt-[6%]">
-        <h1 className="text-[4vw] md:text-[3vw] font-bold text-gray-900">
+        <h1 className="text-[4vw] md:text-[3vw] lg:text-[2vw] font-bold text-gray-900">
           المعروضــات ✨
         </h1>
 
         {/* Dropdown فلتر الـ brands */}
-        <div className="relative w-[35%] md:w-[25%]">
+        <div className="relative w-[35%] md:w-[15%] ">
           {/* Dropdown Button */}
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="bg-white border w-full border-gray-300 rounded-lg p-2 text-[3vw] md:text-[1.2vw] lg:text-[0.9vw] font-medium text-gray-800 hover:bg-gray-50 transition-colors flex items-center gap-2 justify-between"
             >
-              <span className="text-[2.5vw] md:text-[1.5vw]">
+              <span className="text-[2.5vw] md:text-[1.5vw] lg:text-[1vw]">
                 {getSelectedBrandDisplayName()}
               </span>
               <svg
@@ -135,7 +139,7 @@ const Page = () => {
       </div>
 
       {/* Cars Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => {
             const carSlides = car.images.map((img, index) => (
@@ -151,8 +155,9 @@ const Page = () => {
 
             return (
               <div
+                onClick={() => router.push(`/cars/${car.id}`)}
                 key={car.id}
-                className="p-[14px] bg-white rounded-[26px] overflow-hidden shadow-lg flex flex-col items-center justify-center"
+                className="p-[14px]  bg-white rounded-[26px] overflow-hidden shadow-lg flex flex-col items-center justify-center"
                 style={{ direction: "ltr" }}
               >
                 {/* سلايدر صور السيارة */}
@@ -190,7 +195,7 @@ const Page = () => {
                 <div className="flex flex-row justify-between gap-2 items-center w-full">
                   <Link
                     href={`https://wa.me/201000030607?text=${encodeURIComponent(
-                      `السلام عليكم عندي استفسار بخصوص سيارة ${car.model}`
+                      `السلام عليكم عندي استفسار بخصوص سيارة ${car.model}`,
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

@@ -1,6 +1,4 @@
-"use client";
 import React from "react";
-import EmblaCarouselSlider from "../emblaCarouselSlider/EmblaCarouselSlider";
 import { EmblaOptionsType } from "embla-carousel";
 import "../emblaCarouselSlider/emblaCarouselSlider.css";
 import EmblaCarousel from "../emblaCarousel/EmblaCarousel";
@@ -9,28 +7,39 @@ const HomeReels = () => {
   const reels = [
     {
       id: 1,
-      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1099576338900248%2F&show_text=false&width=267&t=0",
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1380153483894167%2F&show_text=false&width=267&t=0",
       title: "Reel 1",
     },
     {
       id: 2,
-      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F768934332777606%2F&show_text=false&width=267&t=0",
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1152592956706816%2F&show_text=false&width=267&t=0",
       title: "Reel 2",
     },
     {
       id: 3,
-      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F816198387418559%2F&show_text=false&width=267&t=0",
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1099576338900248%2F&show_text=false&width=267&t=0",
       title: "Reel 3",
     },
+
     {
       id: 4,
-      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F983594460535183%2F&show_text=false&width=267&t=0",
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F768934332777606%2F&show_text=false&width=267&t=0",
       title: "Reel 4",
     },
     {
       id: 5,
-      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1601819131222757%2F&show_text=false&width=267&t=0",
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F816198387418559%2F&show_text=false&width=267&t=0",
       title: "Reel 5",
+    },
+    {
+      id: 6,
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F983594460535183%2F&show_text=false&width=267&t=0",
+      title: "Reel 6",
+    },
+    {
+      id: 7,
+      src: "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1601819131222757%2F&show_text=false&width=267&t=0",
+      title: "Reel 7",
     },
   ];
 
@@ -48,6 +57,7 @@ const HomeReels = () => {
             title={reel.title}
             allowFullScreen
             scrolling="no"
+            loading="lazy"
           ></iframe>
         </div>
       </div>
@@ -63,7 +73,7 @@ const HomeReels = () => {
   };
 
   return (
-    <div className="w-full mb-[10%]">
+    <div id="reels" className="w-full mb-[10%]">
       <h2 className="font-bold text-center text-[4vw] md:text-[2vw] mb-6 mt-2">
         أحدث الفيديوهات
       </h2>

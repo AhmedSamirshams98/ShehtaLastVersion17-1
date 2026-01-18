@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: number;
@@ -12,7 +13,40 @@ interface User {
 
 const DashboardUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  // جلب بيانات الجلسة الحالية للتحقق من الدور
+  const fetchSession = async () => {
+    try {
+      const res = await fetch("/api/auth/me", { credentials: "include" });
+      if (!res.ok) {
+        router.replace("/login");
+        return;
+      }
+      const data = await res.json();
+      if (!data.user) {
+        router.replace("/login");
+        return;
+      }
+
+      setCurrentUser(data.user);
+
+      // إذا لم يكن superadmin، إعادة التوجيه
+      if (data.user.role !== "superadmin") {
+        alert("ليس لديك صلاحية الوصول إلى هذه الصفحة");
+        router.replace("/"); // إعادة التوجيه للصفحة الرئيسية
+        return;
+      }
+
+      // بعد التأكد من الصلاحية، جلب المستخدمين
+      fetchUsers();
+    } catch (err) {
+      console.error(err);
+      router.replace("/");
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -29,7 +63,7 @@ const DashboardUsersPage = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchSession();
   }, []);
 
   const updateRole = async (id: number, role: string) => {
@@ -55,7 +89,7 @@ const DashboardUsersPage = () => {
     }
   };
 
-  if (loading) return <p>جاري التحميل...</p>;
+  if (loading) return <p>جاري التحقق من الصلاحيات...</p>;
 
   return (
     <div className="px-[8%] p-4">
@@ -89,6 +123,7 @@ const DashboardUsersPage = () => {
                   >
                     <option value="user">مستخدم</option>
                     <option value="admin">أدمن</option>
+                    <option value="superadmin">سوبر أدمن</option>
                   </select>
                 </td>
                 <td className="px-4 py-2 text-center">

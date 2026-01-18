@@ -32,3 +32,11 @@ export interface User {
   role: string;
   image?: string;
 }
+import { IconType } from "react-icons/lib";
+
+export interface NavLink {
+  id: number;
+  name: string;
+  path: string;
+  icon?: IconType; // أيقونة اختيارية
+}

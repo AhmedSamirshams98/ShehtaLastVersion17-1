@@ -4,7 +4,13 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") 
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  user // المستخدم العادي
+  admin // مسؤول
+  superadmin // المسؤول الأعلى
 }
 
 model appUsers {
@@ -13,7 +19,7 @@ model appUsers {
   email      String   @unique
   name       String?
   picture    String?
-  role       String   @default("user")
+  role       UserRole @default(user)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -28,27 +34,28 @@ model car_images {
 
   @@map("car_images")
 }
+
 enum CarStatus {
-  available    // متاحة
-  unavailable  // غير متاحة
+  available // متاحة
+  unavailable // غير متاحة
 }
 
 model cars {
   id          Int          @id @default(autoincrement())
   brand       String
   model       String
-  year        Int         // أضف هذا الحقل
-  condition   String     // وأضف هذا الحقل
+  year        Int // أضف هذا الحقل
+  condition   String // وأضف هذا الحقل
   description String?
   kilometers  Int?
-  status      CarStatus     @default(available)
+  status      CarStatus    @default(available)
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
   car_images  car_images[]
-  
 
   @@map("cars")
 }
+
 model forms {
   id              Int      @id @default(autoincrement())
   customer_name   String
@@ -59,7 +66,7 @@ model forms {
   status          String   @default("pending")
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
-  
+
   // No relations - independent table
 
   @@map("forms")

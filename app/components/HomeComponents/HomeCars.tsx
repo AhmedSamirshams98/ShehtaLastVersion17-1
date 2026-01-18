@@ -32,7 +32,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
       window.location.href = "tel:+201000030607";
     } else {
       alert(
-        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607"
+        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607",
       );
     }
   }
@@ -48,7 +48,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
 
   // الحصول على جميع الـ brands الفريدة
   const uniqueBrands = Array.from(new Set(cars.map((car) => car.brand))).filter(
-    (brand) => brand
+    (brand) => brand,
   );
 
   // تصفية السيارات حسب الـ brand المختار
@@ -132,7 +132,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
         <div className="flex flex-row justify-between gap-2 items-center w-full">
           <Link
             href={`https://wa.me/201000030607?text=${encodeURIComponent(
-              `السلام عليكم عندي استفسار بخصوص سيارة ${car.model}`
+              `السلام عليكم عندي استفسار بخصوص سيارة ${car.model}`,
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -150,7 +150,10 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
             src={phone}
             alt="phone"
           />
-          <button className="bg-[#E6E6E6] font-bold text-black rounded-[42.5px] w-[45%]  text-[3vw] md:text-[1.5vw] xl:text-[1vw] p-1">
+          <button
+            aria-label="carstatus"
+            className="bg-[#E6E6E6] font-bold text-black rounded-[42.5px] w-[45%]  text-[3vw] md:text-[1.5vw] xl:text-[1vw] p-1"
+          >
             {car.condition}
           </button>
           <Link
@@ -163,12 +166,14 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
         {isDashboard && (
           <div className="mt-2 flex gap-4 w-full ">
             <button
+              aria-label="dashboard buttons "
               onClick={(e) => handleEdit(car, e)}
               className="bg-blue-500 text-white px-3 py-1 w-full rounded-[26px] hover:bg-blue-600"
             >
               تعديل
             </button>
             <button
+              aria-label="dashboard buttons "
               onClick={async (e) => {
                 e.stopPropagation(); // Prevent event bubbling
                 if (confirm("هل أنت متأكد من حذف هذه السيارة؟")) {
@@ -233,6 +238,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
               <div className=" absolute top-full  mt-1 w-full bg-white border  border-gray-300 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
                 {filteredCars.length !== cars.length && (
                   <button
+                    aria-label="all cars button"
                     onClick={() => handleBrandSelect("all")}
                     className={`w-full text-right p-2  text-[2.5vw] md:text-[1.2vw] hover:bg-gray-100 transition-colors ${
                       selectedBrand === "all"
@@ -279,6 +285,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
             <p className="text-gray-500">لا توجد سيارات لعرضها</p>
             {selectedBrand !== "all" && (
               <button
+                aria-label="all cars button"
                 onClick={() => setSelectedBrand("all")}
                 className="mt-2 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
@@ -294,33 +301,33 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
 
 // دالة للحصول على الاسم العربي للـ brand
 function getBrandArabicName(brand: string): string {
-const brandMap: { [key: string]: string } = {
-  MercedesBenz: "مرسيدس",
-  Audi: "اودي",
-  Volkswagen: "فولكس فاجن",  // Check this line carefully
-  Ford: "فورد",
-  Mitsubishi: "ميتسوبيشي",
-  Chevrolet: "شيفروليه",
-  Nissan: "نيسان",
-  Skoda: "سكودا",
-  Jeep: "جيب",
-  Seat: "سيات",
-  Peugot: "بيجو",
-  Fiat: "فيات",
-  Peugeot: "بيجو",
-  SEAT: "سيات",
-  Renault: "رينو",
-  Chery: "تشيري",
-  Honda: "هوندا",
-  BYD: "بي واي دي",
-  Geely: "جيلي",
-  MG: "ام جي",
-  Golf: "جولف",
-  Toyota: "تويوتا",
-  Hyundai: "هيونداي",
-  Kia: "كيا",
-  BMW: "بي ام دبليو",
-};
+  const brandMap: { [key: string]: string } = {
+    MercedesBenz: "مرسيدس",
+    Audi: "اودي",
+    Volkswagen: "فولكس فاجن", // Check this line carefully
+    Ford: "فورد",
+    Mitsubishi: "ميتسوبيشي",
+    Chevrolet: "شيفروليه",
+    Nissan: "نيسان",
+    Skoda: "سكودا",
+    Jeep: "جيب",
+    Seat: "سيات",
+    Peugot: "بيجو",
+    Fiat: "فيات",
+    Peugeot: "بيجو",
+    SEAT: "سيات",
+    Renault: "رينو",
+    Chery: "تشيري",
+    Honda: "هوندا",
+    BYD: "بي واي دي",
+    Geely: "جيلي",
+    MG: "ام جي",
+    Golf: "جولف",
+    Toyota: "تويوتا",
+    Hyundai: "هيونداي",
+    Kia: "كيا",
+    BMW: "بي ام دبليو",
+  };
 
   return brandMap[brand] || brand;
 }

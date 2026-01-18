@@ -288,7 +288,7 @@ export default function CarDashboard() {
     "Geely",
     "MG",
   ];
-  if (user.role !== "admin") {
+  if (user.role !== "admin" && user.role !== "superadmin") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
@@ -311,22 +311,6 @@ export default function CarDashboard() {
 
   return (
     <div className=" overflow-hidden min-h-screen ">
-      {/* <div className="mt-[1.5%]  mb-[1.5%] flex flex-col items-center">
-        مرحبا
-        <div className="flex flex-row gap-1  ">
-          {user?.image && (
-            <Image
-              src={user.image}
-              className="rounded-full"
-              alt="shehta trading website user image "
-              width={40}
-              height={30}
-            />
-          )}
-          <h1 className="text-center mb-2 mt-2 "> {user?.name}</h1>
-        </div>
-      </div> */}
-
       <form
         onSubmit={handleSubmit}
         className="mb-8 p-4 flex flex-col items-center  border rounded px-[8%]"
@@ -362,7 +346,7 @@ export default function CarDashboard() {
             >
               <option value="">اختر الماركة</option>
               {carBrands.map((brand) => (
-                <option className="bg-red-300" key={brand} value={brand}>
+                <option className="" key={brand} value={brand}>
                   {brand}
                 </option>
               ))}
@@ -383,28 +367,32 @@ export default function CarDashboard() {
             />
           </label>
 
-          <label className="flex flex-col gap-2 ">
+          <label className="flex flex-col gap-2">
             سنة السيارة
-            <input
+            <select
               disabled={isSubmitting}
-              type="number"
               name="year"
-              placeholder="ادخل سنة السيارة"
               value={formData.year}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Allow any positive number, remove any restrictions
-                const numValue = value === "" ? 0 : parseInt(value) || 0;
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  year: numValue,
-                }));
-              }}
+                  year: parseInt(e.target.value),
+                }))
+              }
               className="p-2 border font-medium text-[#626262] rounded"
-              min="0" // Allow any positive year
-              step="1"
-            />
+            >
+              <option value={0}>اختر السنة</option>
+              {Array.from({ length: 50 }, (_, i) => {
+                const year = new Date().getFullYear() - i; // السنوات من الحالي للوراء
+                return (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                );
+              })}
+            </select>
           </label>
+
           <label className="flex flex-col gap-2 ">
             ادخل عدد كيلومترات السيارة
             <input

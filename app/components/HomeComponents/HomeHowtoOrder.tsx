@@ -12,7 +12,9 @@ const HomeHowtoOrder = () => {
       </h1>
       <Image src={order} alt="كيف تطلب سيارتك من شحتة للتجاره" />
       <Link href="/form">
-        <Button kind="secondary">! اطلب سيارتك الآن</Button>
+        <Button kind="secondary" aria-label="order your car button">
+          ! اطلب سيارتك الآن
+        </Button>
       </Link>{" "}
     </div>
   );

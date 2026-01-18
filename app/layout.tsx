@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+// app/layout.tsx
 import "../app/components/styles/globals.css";
+import { graphikArabic } from "./fonts"
 
-import "../app/components/styles/fonts.css";
 import Nav from "./components/nav/Nav";
 import Footer from "./components/Footer/Footer";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shehta Project",
@@ -13,20 +14,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="font-graphic">
+    <html lang="ar" className={graphikArabic.className}>
+      <body>
         <Nav />
-        <main className="relative top-0 w-screen ">
-          {" "}
-          {/* إضافة padding-top */}
-          {children}
-        </main>
+        <main className="relative top-0 w-screen">{children}</main>
         <Footer />
       </body>
     </html>

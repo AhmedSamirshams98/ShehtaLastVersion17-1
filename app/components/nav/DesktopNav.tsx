@@ -80,6 +80,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ isDashboard = false }) => {
         ))}
         {isDashboard && (
           <button
+            aria-label="logout button"
             className=" p-1  flex items-center rounded-[26px] gap-1   transition-colors"
             onClick={logout}
           >

@@ -5,6 +5,7 @@ import HomeAbout from "./components/HomeComponents/HomeAbout";
 import HomeCars from "./components/HomeComponents/HomeCars";
 import HomeHowtoOrder from "./components/HomeComponents/HomeHowtoOrder";
 import HomeReels from "./components/HomeComponents/HomeReels";
+import HomeClients from "./components/HomeComponents/HomeClients";
 
 const page = () => {
   return (
@@ -13,7 +14,8 @@ const page = () => {
       <HomeMarque />
       <HomeAbout />
       <HomeCars />
-            <HomeReels />
+      <HomeReels />
+      <HomeClients />
 
       <HomeHowtoOrder />
     </div>
