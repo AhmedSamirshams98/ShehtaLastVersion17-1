@@ -93,7 +93,6 @@
 }
 
 .embla__button {
-  background-color: black;
   touch-action: manipulation;
   display: inline-flex;
   text-decoration: none;
@@ -101,15 +100,14 @@
   border: 0;
   padding: 0;
   margin: 0;
-  width: 8vw;
-  height: 8vw;
+  width: 7vw;
+  height: 6vw;
   z-index: 1;
   border-radius: 100%;
-  color: var(--text-body);
+  color:black;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fdb800;
 }
 @media (min-width: 1024px) {
   .embla__button {
@@ -129,7 +127,7 @@
 }
 .embla__button__svg {
   width: 3vw;
-  color: #fdb800;
+  color: color;
 }
 @media (min-width: 768px) {
   .embla__button__svg {

@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "../app/components/styles/globals.css";
-import { graphikArabic } from "./fonts"
+import { graphikArabic } from "./fonts";
 
 import Nav from "./components/nav/Nav";
 import Footer from "./components/Footer/Footer";
@@ -14,12 +14,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ar" className={graphikArabic.className}>
-      <body>
+      <body >
         <Nav />
-        <main className="relative top-0 w-screen">{children}</main>
+        <main className="relative top-0 ">{children}</main>
         <Footer />
       </body>
     </html>

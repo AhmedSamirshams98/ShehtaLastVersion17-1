@@ -15,7 +15,6 @@ const CarDetailsPage = () => {
   const carId = Number(params.id);
   const { currentCar, fetchCarById, loading } = useCarStore();
   const [isOpen, setIsOpen] = useState(false);
-  console.log(currentCar)
 
   useEffect(() => {
     if (carId) {
@@ -30,38 +29,41 @@ const CarDetailsPage = () => {
       window.location.href = "tel:+201000030607";
     } else {
       alert(
-        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607"
+        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607",
       );
     }
   }
-    const getCarUrl = () => {
-    if (typeof window !== 'undefined') {
+  const getCarUrl = () => {
+    if (typeof window !== "undefined") {
       return window.location.href;
     }
-    return '';
+    return "";
   };
 
   // Generate WhatsApp message with car link
   const generateWhatsAppMessage = () => {
     const carUrl = getCarUrl();
-    
+
     if (!currentCar) {
       return `السلام عليكم 🌹\n\nعندي استفسار بخصوص سيارة\n\nرابط السيارة على الموقع:\n${carUrl}`;
     }
-    
+
     const carInfo = `${currentCar.brand} ${currentCar.model} ${currentCar.year}`;
-    
+
     return `السلام عليكم 🌹\n\nعندي استفسار بخصوص سيارة:\n${carInfo}\n\nرابط السيارة على الموقع:\n${carUrl}`;
   };
-  // عمل map على الصور لإنشاء slides للـ carousel
   const carSlides =
     currentCar?.images?.map((img, index) => (
-      <div key={index} className="slider-slide  ">
+      <div
+        key={index}
+        className=" relative object-cover  w-full  aspect-video  rounded-[26px]"
+      >
         <Image
           src={img}
           fill
           alt={`${currentCar.brand} ${currentCar.model} - صورة ${index + 1}`}
-          className="  rounded-[26px]  object-cover "
+          className="object-cover rounded-[26px ] "
+          priority={index === 0}
         />
       </div>
     )) || [];
@@ -82,15 +84,13 @@ const CarDetailsPage = () => {
     );
   }
 
-
-
   return (
-    <div className="min-h-screen px-[8%] mt-[2%] mb-[2%] flex flex-col items-center gap-2">
-      <h1 className="text-[3vw] md:text-[2vw] text-[#000000]">
+    <div className="min-h-screen px-[10%] md:px-[18%] mt-[1%] mb-[2%] flex flex-col items-center gap-2">
+      <h1 className="text-[3vw] md:text-[1.4vw] text-[#000000]">
         {currentCar.brand} {currentCar.model}
       </h1>
 
-      <h1 className="text-center text-[2.5vw] md:text-[1.3vw] font-medium">
+      <h1 className="text-center text-[2.5vw] md:text-[1vw] font-medium">
         🤲 بفضل ونعمة من الله 🤲
         <br />
         #شحتة_للتجارة {currentCar.brand} {currentCar.model}
@@ -99,10 +99,10 @@ const CarDetailsPage = () => {
       {/* معلومات السيارة */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full" dir="rtl">
         <div className="flex flex-col gap-2">
-          <label className="text-[4vw] md:text-[1.2vw] font-medium">
+          <label className="text-[4vw] md:text-[1vw] font-medium">
             ماركة السيارة :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.brand}
           </h1>
         </div>
@@ -111,7 +111,7 @@ const CarDetailsPage = () => {
           <label className="text-[4vw] md:text-[1.2vw] font-medium">
             موديل السيارة :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.model}
           </h1>
         </div>
@@ -120,25 +120,25 @@ const CarDetailsPage = () => {
           <label className="text-[4vw] md:text-[1.2vw] font-medium">
             سنة الصنع :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.year}
           </h1>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-[4vw] md:text-[1.2vw] font-medium">
+          <label className="text-[4vw] md:text-[1vw] font-medium">
             عداد السيارة :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.kilometers} KM
           </h1>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-[4vw] md:text-[1.2vw] font-medium">
+          <label className="text-[4vw] md:text-[1vw] font-medium">
             حالة السيارة :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.condition}
           </h1>
         </div>
@@ -147,21 +147,21 @@ const CarDetailsPage = () => {
           <label className="text-[4vw] md:text-[1.2vw] font-medium">
             امكانية الطلب :
           </label>
-          <h1 className="rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
+          <h1 className="rounded-[34px] text-[4vw] md:text-[1vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium">
             {currentCar.status === "available" ? "متاح" : "محجوز"}
           </h1>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-[4vw] md:text-[1.2vw] font-medium">
+          <label className="text-[4vw] md:text-[1vw] font-medium">
             للمزيد من التفاصيل :
           </label>
-          <button className="relative text-[4vw] md:text-[1.2vw] rounded-[34px] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium flex flex-row justify-center items-center w-full hover:bg-gray-50 transition-colors">
+          <button className="relative text-[4vw] md:text-[1vw] rounded-[34px] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium flex flex-row justify-center items-center w-full hover:bg-gray-50 transition-colors">
             تواصل واتساب
             <Link
               className="absolute left-2 h-full md:w-[3vw] flex items-center lg:w-[1.5vw]"
               href={`https://wa.me/201000030607?text=${encodeURIComponent(
-                generateWhatsAppMessage()
+                generateWhatsAppMessage(),
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -179,7 +179,10 @@ const CarDetailsPage = () => {
           <label className="text-[4vw] md:text-[1.2vw] font-medium">
             للمزيد من التفاصيل :
           </label>
-          <button onClick={openDialer} className="relative rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium flex flex-row justify-center items-center w-full hover:bg-gray-50 transition-colors">
+          <button
+            onClick={openDialer}
+            className="relative rounded-[34px] text-[4vw] md:text-[1.2vw] bg-white text-black border-[1px] border-[#ffffff] p-[2%] text-center font-medium flex flex-row justify-center items-center w-full hover:bg-gray-50 transition-colors"
+          >
             تواصل هاتفياً
             <Image
               className="absolute left-2 h-full md:w-[3vw] lg:w-[1.5vw]"
@@ -189,11 +192,11 @@ const CarDetailsPage = () => {
           </button>
         </div>
         <div className="text-right flex flex-col col-span-1 md:col-span-4 w-full gap-1">
-          <h2 className="text-[4vw] md:text-[1.2vw] font-medium text-black mb-1">
+          <h2 className="text-[4vw] md:text-[1vw] font-medium text-black mb-1">
             وصف السيارة
           </h2>
           <p
-            className="text-[4vw] md:text-[1.2vw] font-medium text-justify  leading-relaxed bg-white p-[2%] rounded-2xl"
+            className="text-[4vw] md:text-[1vw] font-medium text-justify  leading-relaxed bg-white p-[1%] rounded-2xl"
             style={{ direction: "rtl" }}
           >
             {currentCar.description}
@@ -203,7 +206,7 @@ const CarDetailsPage = () => {
 
       {/* الوصف */}
 
-      <div onClick={() => setIsOpen(true)} className="w-full cursor-pointer">
+      <div onClick={() => setIsOpen(true)} className="w-full   cursor-pointer">
         <EmblaCarouselSlider slides={carSlides} options={{ loop: true }} />
       </div>
 

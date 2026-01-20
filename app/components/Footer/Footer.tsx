@@ -10,8 +10,11 @@ import tiktok from "../../../public/images/tiktok.svg";
 import facebook from "../../../public/images/facebook.svg";
 import { Button } from "antd";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+  const pathName = usePathname();
+  const isDashboard = pathName?.startsWith("/dashboard");
   function openDialer() {
     const userAgent = navigator.userAgent;
 
@@ -19,7 +22,7 @@ const Footer = () => {
       window.location.href = "tel:+201000030607";
     } else {
       alert(
-        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607"
+        " هذه الميزة متاحة فقط على الأجهزة المحمولة.رقم الاتصال :+201000030607",
       );
     }
   }
@@ -27,7 +30,7 @@ const Footer = () => {
     const phoneNumber = "+201000030607";
     const message = "السلام عليكم عندي استفسار بخصوص سيارة";
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
+      message,
     )}`;
     window.open(url, "_blank");
   }
@@ -35,7 +38,7 @@ const Footer = () => {
   return (
     <div
       id="contact"
-      className="bg-[#282828] text-black px-[8%]  py-[8%] md:py-[2%] w-full flex flex-col lg:flex-row items-center justify-between gap-6"
+      className={` ${isDashboard ? "hidden" : "block"} bg-[#282828] text-black px-[8%]  py-[8%] md:py-[2%] w-full flex flex-col lg:flex-row items-center justify-between gap-6`}
       style={{ direction: "rtl" }}
     >
       {/**right part of footer */}

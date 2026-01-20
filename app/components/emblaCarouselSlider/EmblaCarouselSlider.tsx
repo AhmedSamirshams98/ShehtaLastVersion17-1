@@ -9,6 +9,7 @@ import {
 
 import "./emblaCarouselSlider.css";
 import useEmblaCarousel from "embla-carousel-react";
+import { usePathname } from "next/navigation";
 
 type PropType = {
   slides: React.ReactNode[];
@@ -16,6 +17,9 @@ type PropType = {
 };
 
 const EmblaCarouselSlider: React.FC<PropType> = (props) => {
+  const pathname = usePathname();
+
+  const aspectClass = pathname === "/" ? "aspect-square" : "aspect-video";
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
 
@@ -67,9 +71,10 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
   return (
     <section className="newslider">
       <div className="newslideview" ref={emblaRef}>
-        <div className="slidecontainer aspect-square">
+        <div className={`slidecontainer ${aspectClass} rounded-[26px]`}>
+          {" "}
           {slides.map((slide, index) => (
-            <div className="newslides" key={index}>
+            <div className="newslides " key={index}>
               {slide}
             </div>
           ))}

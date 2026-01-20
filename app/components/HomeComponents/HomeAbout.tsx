@@ -87,14 +87,14 @@ const HomeAbout = () => {
   return (
     <div
       id="about"
-      className="  rounded-[42px]   bg-[#FFFFFF] p-[6%] md:p-[2%] flex flex-col md:flex-row gap-[2vw] "
+      className="  rounded-[42px]   bg-[#FFFFFF] p-[6%] md:p-[2%] lg:w-[80%] flex flex-col md:flex-row gap-[2vw] "
       style={{ direction: "rtl" }}
     >
       <div className="w-full flex flex-col gap-2">
         <h1 className="  font-bold  text-[4vw]  md:text-[2vw] text-center md:text-right">
           لمحة عن شحتة للتجارة ✨
         </h1>
-        <p className="font-medium text-justify text-[3vw] md:text-[1.4vw] leading-relaxed md:leading-[2.2vw]  ">
+        <p className="font-medium text-justify text-[3vw] md:text-[1.4vw] lg:text-[1vw] leading-relaxed md:leading-[2.2vw]  ">
           بدأت رحلة شحتة فى عام 1970 فى تجارة الأدوات المكتبية و الكتب و
           مستلزمات الدراسة و الخردوات و التحف و الأنتيكات , من مدينة بلطيم مدينة
           السحر و الجمال كما يطلق عليها لطبيعتها الخلابة و أجوائها الساحلية

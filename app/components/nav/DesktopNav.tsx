@@ -58,7 +58,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ isDashboard = false }) => {
   };
 
   return (
-    <div className="flex flex-row w-[86%]" style={{ direction: "rtl" }}>
+    <div className="flex flex-row  w-[87%] md:w-[70%] lg:w-[70%]" style={{ direction: "rtl" }}>
       <div className="w-full flex flex-row backdrop-blur-3xl items-center p-[1%] justify-between rounded-[42px] bg-gradient-to-r from-[#3B260680] to-[#3B260680]/50 text-[1.2vw] lg:text-[1vw]">
         <Link href="/">
           <div className="flex flex-row items-center gap-4">
@@ -68,12 +68,12 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ isDashboard = false }) => {
               src={shehtalogo}
               alt="shehtatraidingcars شحتة للتجارة"
             />
-            <h3 className="font-bold text-[1.2vw]">شحتة للتجارة</h3>
+            <h3 className="font-bold text-[1vw]">شحتة للتجارة</h3>
           </div>
         </Link>
         {links.map((link) => (
           <Link key={link.id} href={link.path}>
-            <h1 className="text-[1vw] hover:text-[#fdba00] transition-colors">
+            <h1 className="text-[0.8vw] hover:text-[#fdba00] transition-colors">
               {link.name}
             </h1>
           </Link>

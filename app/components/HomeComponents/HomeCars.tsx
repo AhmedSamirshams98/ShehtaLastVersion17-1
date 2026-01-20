@@ -202,7 +202,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
       style={{ direction: "rtl" }}
     >
       <div className="px-[10%] mt-4 w-full flex flex-row justify-between items-center gap-4">
-        <h1 className="text-[4vw] md:text-[3vw] font-bold text-center md:text-right text-gray-900">
+        <h1 className="text-[4vw] md:text-[3vw] lg:text-[1.8vw] font-bold text-center md:text-right text-gray-900">
           المعروضــات ✨
         </h1>
 

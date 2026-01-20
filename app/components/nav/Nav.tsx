@@ -45,7 +45,7 @@ const Nav = () => {
   return (
     <header
       ref={navRef}
-      className="fixed top-0  text-white z-[90] px-[4%]  lg:px-0   py-[1%] w-full flex items-center justify-center transition-all duration-300"
+      className={` ${isDashboard?"hidden":"block"} fixed top-0  text-white z-[90] px-[4%]  lg:px-0   py-[1%] w-full flex items-center justify-center transition-all duration-300`}
       style={{
         direction: "rtl",
         backgroundImage: !isHome ? `url(${backgroundimage.src})` : "none",

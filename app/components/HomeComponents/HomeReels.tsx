@@ -73,7 +73,7 @@ const HomeReels = () => {
   };
 
   return (
-    <div id="reels" className="w-full mb-[10%]">
+    <div id="reels" className="w-full ">
       <h2 className="font-bold text-center text-[4vw] md:text-[2vw] mb-6 mt-2">
         أحدث الفيديوهات
       </h2>

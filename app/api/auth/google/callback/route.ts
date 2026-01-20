@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   if (!code) {
     return NextResponse.redirect(
-      new URL("/?error=no_code_provided", request.url)
+      new URL("/?error=no_code_provided", request.url),
     );
   }
 
@@ -46,12 +46,12 @@ export async function GET(request: NextRequest) {
       "https://www.googleapis.com/oauth2/v2/userinfo",
       {
         headers: { Authorization: `Bearer ${tokenData.access_token}` },
-      }
+      },
     );
 
     if (!userRes.ok) {
       return NextResponse.redirect(
-        new URL("/?error=profile_failed", request.url)
+        new URL("/?error=profile_failed", request.url),
       );
     }
 

@@ -76,11 +76,11 @@ const Page = () => {
   };
   return (
     <div
-      className="relative min-h-[100vh] mt-[2%] px-[8%] flex flex-col items-center gap-4  "
+      className="relative py-[4%] md:py-[2%] lg:py-[1%] mt-[2%] lg:mt-[1%] px-[8%] flex flex-col items-center gap-4  "
       style={{ direction: "rtl" }}
     >
       <div className="flex flex-col text-center md:text-right">
-        <h1 className=" text-[6vw] md:text-[2.5vw]">نموذج طلب سيارة ✨</h1>
+        <h1 className=" text-[6vw] md:text-[2.5vw] lg:text-[1.5vw]">نموذج طلب سيارة ✨</h1>
         <h1 className="font-medium w-full text-[4vw] md:text-[1.6vw]">
           ادخل بيانات التواصل معك و تفاصيل طلبك و سيتم التواصل معك بكل التفاصيل
           اللى محتاج تعرفها زى السعر و المواصفات الكاملة و الموعد المتوقع
