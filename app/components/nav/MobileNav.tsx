@@ -1,24 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import shehtalogo from "../../../public/images/shehtalogo.png";
 import { RiCloseLine, RiMenu2Fill } from "react-icons/ri";
-import { mainNavLinks, dashboardNavLinks } from "@/data/constants";
+import { mainNavLinks } from "@/data/constants";
 import Link from "next/link";
 
-interface MobileNavProps {
-  isDashboard?: boolean;
-}
-
-const MobileNav: React.FC<MobileNavProps> = ({ isDashboard = false }) => {
+const MobileNav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-
-  // اختيار الروابط بناءً على الصفحة
-  const links = isDashboard ? dashboardNavLinks : mainNavLinks;
-  const title = isDashboard ? "شحتة للتجارة" : "شحتة للتجارة";
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -44,10 +36,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isDashboard = false }) => {
       {/* Navbar */}
       <div className="flex flex-row justify-between w-full backdrop-blur-3xl z-[50] bg-gradient-to-r from-[#3B260680] to-[#3B260680]/50 text rounded-[42px] px-4">
         {/* Logo */}
-        <Link
-          className="flex flex-row gap-2 items-center z-[60]"
-          href={isDashboard ? "/dashboard" : "/"}
-        >
+        <Link className="flex flex-row gap-2 items-center z-[60]" href="/">
           <Image
             width={31}
             height={40}
@@ -55,7 +44,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isDashboard = false }) => {
             src={shehtalogo}
             alt="shehtatraidingcars شحتة للتجارة"
           />
-          <h1 className="font-bold">{title}</h1>
+          <h1 className="font-bold">شحتة للتجارة</h1>
         </Link>
 
         {/* Menu Button */}
@@ -77,14 +66,16 @@ const MobileNav: React.FC<MobileNavProps> = ({ isDashboard = false }) => {
           onClick={closeMenu}
         >
           <nav className="px-[8%] py-[20%]" dir="rtl">
-            {links.map((link) => {
-  const Icon = link.icon; // ✅ TypeScript يعرف أنها اختياري
+            {mainNavLinks.map((link) => {
+              const Icon = link.icon; // ✅ TypeScript يعرف أنها اختياري
               return (
                 <Link
                   key={link.id}
                   href={link.path}
                   className={`flex items-center gap-4 py-3 text-white text-[4vw] rounded px-2 transition-all duration-300 hover:text-[#fdba00] ${
-                    isAnimating ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                    isAnimating
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 translate-x-4"
                   }`}
                   onClick={closeMenu}
                 >

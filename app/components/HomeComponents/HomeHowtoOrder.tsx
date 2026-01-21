@@ -7,7 +7,7 @@ import { Button } from "../ui/Button";
 const HomeHowtoOrder = () => {
   return (
     <div className="flex  flex-col items-center  justify-center gap-6 mb-[4%] w-full">
-      <h1 className="text-[4vw] md:text-[2.5vw]">
+      <h1 className="text-[4vw] md:text-[2.5vw] lg:text-[2vw]">
         كيف يمكنك طلب سيارتك المخصصة؟
       </h1>
       <Image src={order} alt="كيف تطلب سيارتك من شحتة للتجاره" />

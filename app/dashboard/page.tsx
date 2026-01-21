@@ -19,57 +19,12 @@ import { PageHeader } from "../components/shared/PageHeader";
 import UniLoading from "../components/shared/UniLoading";
 import Image from "next/image";
 import axios from "axios";
-
-interface User {
-  id: number;
-  name: string | null;
-  email: string;
-  role: string;
-}
-
-interface DashboardStats {
-  totalCars: number;
-  availableCars: number;
-  totalOrders: number;
-  totalUsers: number;
-}
-
-interface CarImage {
-  id: number;
-  image_url: string;
-  car_id: number;
-}
-
-interface Car {
-  id: number;
-  brand: string;
-  model: string;
-  year: number;
-  condition: string;
-  kilometers?: number;
-  description?: string;
-  status: string;
-  car_images: CarImage[];
-}
-
-interface CarFormData {
-  brand: string;
-  model: string;
-  year: number;
-  condition: string;
-  kilometers?: number;
-  description?: string;
-  status: string;
-  imageFiles: File[];
-  existingImages: string[];
-}
+import { useCarStore } from "@/stores/carStore";
+import { Car, CarFormData, User } from "@/types/car";
 
 export default function DashboardPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [cars, setCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // ---- Modal & Editing state ----
   const [isEditing, setIsEditing] = useState(false);
@@ -87,7 +42,6 @@ export default function DashboardPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ---- Fetch Session & Data ----
   const fetchSession = async () => {
     try {
       const res = await fetch("/api/auth/me", { credentials: "include" });
@@ -100,44 +54,27 @@ export default function DashboardPage() {
     }
   };
 
-  const fetchStats = async () => {
-    try {
-      const res = await fetch("/api/dashboard/stats", {
-        credentials: "include",
-      });
-      if (!res.ok) return;
-      const data = await res.json();
-      setStats(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchAvailableCars = async () => {
-    try {
-      const res = await fetch("/api/cars/available");
-      const data = await res.json();
-      setCars(data.cars || []);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { availableCars, fetchAvailableCars, stats, fetchStats, loading } =
+    useCarStore();
 
   useEffect(() => {
     const fetchAllData = async () => {
-      setLoading(true);
       await fetchSession();
       await fetchStats();
       await fetchAvailableCars();
-      setLoading(false);
     };
+
     fetchAllData();
   }, []);
 
   if (loading) return <UniLoading />;
   if (!stats) return null;
-
-  const { totalCars, availableCars, totalOrders, totalUsers } = stats;
+  const {
+    totalCars,
+    availableCars: availableCarsCount,
+    totalOrders,
+    totalUsers,
+  } = stats;
 
   // ---- Editing Handlers ----
   const handleEditCarFromTable = (car: Car) => {
@@ -152,7 +89,7 @@ export default function DashboardPage() {
       kilometers: car.kilometers || 0,
       status: car.status || "available",
       imageFiles: [],
-      existingImages: car.car_images.map((img) => img.image_url) || [],
+      existingImages: car.car_images?.map((img) => img.image_url) || [],
     });
   };
 
@@ -305,7 +242,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="flex items-center gap-2">
             <CheckCircleIcon className="text-green-500" />
-            <span className="text-lg font-bold">{availableCars}</span>
+            <span className="text-lg font-bold">{availableCarsCount}</span>
           </CardContent>
         </Card>
 
@@ -345,13 +282,14 @@ export default function DashboardPage() {
               <th className="px-4 py-2 text-right">التوفر</th>
               <th className="px-4 py-2 text-right">الوصف</th>
               <th className="px-4 py-2 text-right">تعديل</th>
+              <th className="px-4 py-2 text-right">حذف</th>
             </tr>
           </thead>
           <tbody>
-            {cars.map((car) => (
+            {availableCars?.map((car) => (
               <tr key={car.id} className="border-t">
                 <td className="px-4 py-2 w-[120px] h-[80px]">
-                  {car.car_images.length > 0 ? (
+                  {car.car_images?.length ? (
                     <Image
                       src={car.car_images[0].image_url}
                       alt={car.model}
@@ -378,6 +316,23 @@ export default function DashboardPage() {
                     className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
                   >
                     تعديل
+                  </button>
+                </td>
+                <td className="px-4 py-2">
+                  <button
+                    onClick={async () => {
+                      if (!confirm("هل أنت متأكد من حذف هذه السيارة؟")) return;
+                      try {
+                        await useCarStore.getState().deleteCar(car.id);
+                        alert("تم حذف السيارة بنجاح");
+                      } catch (err) {
+                        console.error(err);
+                        alert("حدث خطأ أثناء حذف السيارة");
+                      }
+                    }}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    حذف
                   </button>
                 </td>
               </tr>

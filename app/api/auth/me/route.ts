@@ -1,51 +1,28 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/jwt";
+import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 import prisma from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-
-    if (!token) {
-      return NextResponse.json({ user: null }, { status: 200 });
-    }
-
-    const payload = verifyToken(token);
-    if (!payload) {
-      return NextResponse.json({ user: null }, { status: 200 });
-    }
+    const secret = process.env.JWT_SECRET!;
+    const decoded: any = jwt.verify(token, secret);
 
     const user = await prisma.appUsers.findUnique({
-      where: { id: payload.sub },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        picture: true,
-      },
+      where: { id: decoded.sub },
+      select: { id: true, name: true, email: true, role: true },
     });
 
-    if (!user) {
-      return NextResponse.json({ user: null }, { status: 200 });
-    }
+    if (!user) return NextResponse.json({ user: null }, { status: 404 });
 
-    return NextResponse.json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        image: user.picture,
-      },
-    });
-  } catch (error) {
-    return NextResponse.json({ error: "خطأ في الخادم" }, { status: 500 });
+    return NextResponse.json({ user });
+  } catch (err) {
+    console.error("Auth/me error:", err);
+    return NextResponse.json({ user: null }, { status: 401 });
   }
-}
-
-export async function OPTIONS() {
-  return NextResponse.json({}, { status: 200 });
 }

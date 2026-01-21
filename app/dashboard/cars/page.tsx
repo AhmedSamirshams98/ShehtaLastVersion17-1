@@ -223,6 +223,7 @@ export default function DashboardCarsPage() {
     }
   };
 
+  // ------------------ Add ------------------
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.brand || !formData.model)
@@ -279,6 +280,19 @@ export default function DashboardCarsPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // ------------------ Delete ------------------
+  const handleDeleteCar = async (carId: number) => {
+    if (!confirm("هل أنت متأكد من حذف هذه السيارة؟")) return;
+    try {
+      await axios.delete(`/api/cars/${carId}`);
+      setCars((prev) => prev.filter((c) => c.id !== carId));
+      alert("تم حذف السيارة بنجاح");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء حذف السيارة");
+    }
+  };
+
   return (
     <section className="space-y-6 relative">
       <div className="flex justify-between items-center mb-4">
@@ -303,7 +317,7 @@ export default function DashboardCarsPage() {
               <th className="px-4 py-2 text-right">الحالة</th>
               <th className="px-4 py-2 text-right">التوفر</th>
               <th className="px-4 py-2 text-right">الوصف</th>
-              <th className="px-4 py-2 text-right">تعديل</th>
+              <th className="px-4 py-2 text-right">الإجراءات</th>
             </tr>
           </thead>
           <tbody>
@@ -331,12 +345,18 @@ export default function DashboardCarsPage() {
                 <td className="px-4 py-2">{car.condition}</td>
                 <td className="px-4 py-2">{car.status}</td>
                 <td className="px-4 py-2">{car.description ?? "-"}</td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 flex gap-2">
                   <button
                     onClick={() => handleEditCar(car)}
                     className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
                   >
                     تعديل
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCar(car.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    حذف
                   </button>
                 </td>
               </tr>
@@ -348,7 +368,7 @@ export default function DashboardCarsPage() {
       {/* ---------------- Add / Edit Modal ---------------- */}
       {(isEditing || isAdding) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 relative">
+          <div className="bg-white rounded-lg shadow-lg w-full overflow-y-auto max-w-3xl max-h-[90vh]  p-6 relative">
             <button
               onClick={handleCancel}
               className="absolute top-4 left-4 text-red-500 hover:text-red-700"
@@ -364,7 +384,7 @@ export default function DashboardCarsPage() {
               onSubmit={isEditing ? handleEditSubmit : handleAddSubmit}
               className="space-y-4"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                 <label className="flex flex-col gap-2">
                   الماركة
                   <select
@@ -464,10 +484,32 @@ export default function DashboardCarsPage() {
               </label>
 
               {/* الصور */}
-              {formData.imageFiles.length > 0 && (
+              {(formData.existingImages.length > 0 ||
+                formData.imageFiles.length > 0) && (
                 <div className="mt-4 flex flex-wrap gap-2">
+                  {/* صور موجودة سابقًا */}
+                  {formData.existingImages.map((url, i) => (
+                    <div key={`existing-${i}`} className="relative">
+                      <Image
+                        src={url}
+                        alt={`existing-${i}`}
+                        width={100}
+                        height={100}
+                        className="object-cover rounded border"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(i, "existing")}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex justify-center items-center text-sm"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* الصور الجديدة */}
                   {formData.imageFiles.map((file, i) => (
-                    <div key={i} className="relative">
+                    <div key={`new-${i}`} className="relative">
                       <Image
                         src={URL.createObjectURL(file)}
                         alt={file.name}

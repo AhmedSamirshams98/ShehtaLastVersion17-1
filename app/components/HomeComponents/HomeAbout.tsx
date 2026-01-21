@@ -87,7 +87,7 @@ const HomeAbout = () => {
   return (
     <div
       id="about"
-      className="  rounded-[42px]   bg-[#FFFFFF] p-[6%] md:p-[2%] lg:w-[80%] flex flex-col md:flex-row gap-[2vw] "
+      className=" mt-[1%] mb-[1%]  rounded-[42px]   bg-[#FFFFFF] p-[6%] md:p-[2%] lg:w-[80%] flex flex-col md:flex-row gap-[2vw] "
       style={{ direction: "rtl" }}
     >
       <div className="w-full flex flex-col gap-2">

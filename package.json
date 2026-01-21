@@ -16,6 +16,7 @@
     "@types/pg": "^8.15.5",
     "antd": "^5.27.4",
     "axios": "^1.12.2",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",

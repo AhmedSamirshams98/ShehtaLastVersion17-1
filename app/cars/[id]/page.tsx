@@ -53,16 +53,13 @@ const CarDetailsPage = () => {
     return `السلام عليكم 🌹\n\nعندي استفسار بخصوص سيارة:\n${carInfo}\n\nرابط السيارة على الموقع:\n${carUrl}`;
   };
   const carSlides =
-    currentCar?.images?.map((img, index) => (
-      <div
-        key={index}
-        className=" relative object-cover  w-full  aspect-video  rounded-[26px]"
-      >
+    currentCar?.images?.map((imgUrl, index) => (
+      <div key={index} className=" relative   w-full  aspect-video  ">
         <Image
-          src={img}
+          src={imgUrl}
           fill
           alt={`${currentCar.brand} ${currentCar.model} - صورة ${index + 1}`}
-          className="object-cover rounded-[26px ] "
+          className="object-cover rounded-[18px] "
           priority={index === 0}
         />
       </div>
@@ -79,13 +76,13 @@ const CarDetailsPage = () => {
   if (!currentCar) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">السيارة غير موجودة</p>
+        <p className="text-xl"> </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-[10%] md:px-[18%] mt-[1%] mb-[2%] flex flex-col items-center gap-2">
+    <div className=" px-[10%] md:px-[18%] mt-[2%] mb-[2%]  flex flex-col items-center gap-2">
       <h1 className="text-[3vw] md:text-[1.4vw] text-[#000000]">
         {currentCar.brand} {currentCar.model}
       </h1>

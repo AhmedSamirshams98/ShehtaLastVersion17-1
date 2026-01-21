@@ -15,9 +15,9 @@ enum UserRole {
 
 model appUsers {
   id         Int      @id @default(autoincrement())
-  google_id  String?  @unique
   email      String   @unique
   name       String?
+  password   String
   picture    String?
   role       UserRole @default(user)
   created_at DateTime @default(now())

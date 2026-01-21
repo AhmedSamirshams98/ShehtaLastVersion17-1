@@ -1,16 +1,36 @@
+export interface CarImage {
+  id: number;
+  image_url: string;
+  car_id: number;
+}
+
 export interface Car {
-  id?: number;
+  id: number;
   brand: string;
   model: string;
-  year: number; // تأكد من وجوده
+  year: number;
   condition: string;
   description: string;
   kilometers: number;
   status: string;
-  images: string[];
-  created_at?: string;
-  updated_at?: string;
+  car_images: CarImage[]; // ✅ لا يمكن أن تكون undefined بعد تحميل البيانات من Prisma
+    images?: string[]; // ✅ أضف هذا لتجنب الخطأ
+
 }
+
+
+export interface CarFormData {
+  brand: string;
+  model: string;
+  year: number;
+  condition: string;
+  kilometers?: number;
+  description?: string;
+  status: string;
+  imageFiles: File[];
+  existingImages: string[];
+}
+
 export interface CarResponse {
   id: number;
   brand: string;
@@ -39,4 +59,10 @@ export interface NavLink {
   name: string;
   path: string;
   icon?: IconType; // أيقونة اختيارية
+}
+export interface DashboardStats {
+  totalCars: number;
+  availableCars: number;
+  totalOrders: number;
+  totalUsers: number;
 }

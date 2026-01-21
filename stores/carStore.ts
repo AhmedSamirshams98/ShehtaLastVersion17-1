@@ -1,15 +1,18 @@
-import { Car } from "@/types/car";
+import { Car, DashboardStats } from "@/types/car";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface CarStore {
   cars: Car[];
+  availableCars: Car[];
+  stats: DashboardStats | null;
   currentCar: Car | null;
   loading: boolean;
   error: string | null;
 
-  // Actions
   fetchCars: () => Promise<void>;
+  fetchAvailableCars: () => Promise<void>;
+  fetchStats: () => Promise<void>;
   fetchCarById: (id: number) => Promise<void>;
   createCar: (carData: Omit<Car, "id">) => Promise<void>;
   updateCar: (id: number, carData: Partial<Car>) => Promise<void>;
@@ -22,9 +25,33 @@ export const useCarStore = create<CarStore>()(
   devtools(
     (set) => ({
       cars: [],
+      availableCars: [], // ✅ مهم جدًا
+
+      stats: null,
       currentCar: null,
       loading: false,
       error: null,
+
+      fetchStats: async () => {
+        set({ loading: true, error: null });
+        try {
+          const res = await fetch("/api/dashboard/stats", {
+            credentials: "include",
+          });
+
+          if (!res.ok) {
+            throw new Error("فشل في جلب الإحصائيات");
+          }
+
+          const stats = await res.json();
+          set({ stats, loading: false });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : "خطأ غير متوقع",
+            loading: false,
+          });
+        }
+      },
 
       fetchCars: async () => {
         set({ loading: true, error: null });
@@ -55,6 +82,23 @@ export const useCarStore = create<CarStore>()(
         } catch (error) {
           set({
             error: error instanceof Error ? error.message : "حدث خطأ غير متوقع",
+            loading: false,
+          });
+        }
+      },
+      fetchAvailableCars: async () => {
+        set({ loading: true, error: null });
+        try {
+          const res = await fetch("/api/cars/available");
+          if (!res.ok) throw new Error("فشل في جلب السيارات المتاحة");
+          const data = await res.json();
+          set({
+            availableCars: data.cars ?? data,
+            loading: false,
+          });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : "خطأ غير متوقع",
             loading: false,
           });
         }
@@ -138,6 +182,7 @@ export const useCarStore = create<CarStore>()(
 
           set((state) => ({
             cars: state.cars.filter((car) => car.id !== id),
+            availableCars: state.availableCars.filter((car) => car.id !== id), // ✅ أضف هذا
             currentCar: state.currentCar?.id === id ? null : state.currentCar,
             loading: false,
           }));
@@ -160,6 +205,6 @@ export const useCarStore = create<CarStore>()(
     }),
     {
       name: "car-store",
-    }
-  )
+    },
+  ),
 );

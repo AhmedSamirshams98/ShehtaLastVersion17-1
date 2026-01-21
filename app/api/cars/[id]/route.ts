@@ -19,9 +19,8 @@ export async function GET(
 
     const car = await prisma.cars.findUnique({
       where: { id: carId },
-      include: {
-        car_images: { select: { image_url: true } },
-      },
+           include: { car_images: true },
+
     });
 
     if (!car) {

@@ -10,18 +10,15 @@ import phone from "@/public/images/phonenumber.svg";
 import EmblaCarousel from "../emblaCarousel/EmblaCarousel";
 import Link from "next/link";
 import { useCarStore } from "@/stores/carStore";
-import { usePathname, useRouter } from "next/navigation";
-import { Car } from "@/types/car";
+import { useRouter } from "next/navigation";
 
 interface HomeCarsProps {
-  isDashboard?: boolean;
-  onEditCar?: (car: Car) => void; // Use proper type instead of any
+  showAll?: boolean;
 }
 
-const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
+const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
   const router = useRouter();
-  const { cars, fetchCars, deleteCar } = useCarStore();
-  const pathname = usePathname();
+  const { availableCars, fetchAvailableCars, cars, fetchCars } = useCarStore();
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -36,26 +33,24 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
       );
     }
   }
-
   useEffect(() => {
-    if (cars.length === 0) {
-      fetchCars();
+    if (showAll) {
+      if (!cars || cars.length === 0) fetchCars();
+    } else {
+      if (!availableCars || availableCars.length === 0) fetchAvailableCars();
     }
-  }, [fetchCars, cars.length]);
+  }, [showAll, fetchAvailableCars, fetchCars, availableCars, cars]);
 
-  // التحقق إذا كنا في الصفحة الرئيسية أو في الداشبورد
-  const isHomePage = pathname === "/" && !isDashboard;
+  const carsToShow = showAll ? cars : availableCars;
 
-  // الحصول على جميع الـ brands الفريدة
-  const uniqueBrands = Array.from(new Set(cars.map((car) => car.brand))).filter(
-    (brand) => brand,
-  );
+  const uniqueBrands = Array.from(
+    new Set(carsToShow?.map((car) => car.brand)),
+  ).filter(Boolean);
 
-  // تصفية السيارات حسب الـ brand المختار
   const filteredCars =
     selectedBrand === "all"
-      ? cars
-      : cars.filter((car) => car.brand === selectedBrand);
+      ? carsToShow
+      : carsToShow.filter((car) => car.brand === selectedBrand);
 
   const OPTIONS = {
     loop: true,
@@ -68,25 +63,16 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
     setIsDropdownOpen(false);
   };
 
-  // دالة للحصول على الاسم المعروض للبراند المختار
   const getSelectedBrandDisplayName = () => {
     if (selectedBrand === "all") return "كل السيارات";
     return getBrandArabicName(selectedBrand);
   };
 
-  // دالة التعامل مع التعديل
-  const handleEdit = (car: Car, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling
-    if (onEditCar) {
-      onEditCar(car); // Pass the car data to parent component
-    }
-  };
-
-  const aboutSlides = filteredCars.map((car) => {
-    const carSlides = car.images.map((img, index) => (
+  const aboutSlides = filteredCars?.map((car) => {
+    const carSlides = car.car_images.map((img, index) => (
       <div key={index} className="slider-slide object-cover">
         <Image
-          src={img}
+          src={img.image_url}
           fill
           alt={`${car.brand} ${car.model}`}
           className="object-cover w-full aspect-square rounded-[26px]"
@@ -163,58 +149,29 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
             قراءة المزيد
           </Link>
         </div>
-        {isDashboard && (
-          <div className="mt-2 flex gap-4 w-full ">
-            <button
-              aria-label="dashboard buttons "
-              onClick={(e) => handleEdit(car, e)}
-              className="bg-blue-500 text-white px-3 py-1 w-full rounded-[26px] hover:bg-blue-600"
-            >
-              تعديل
-            </button>
-            <button
-              aria-label="dashboard buttons "
-              onClick={async (e) => {
-                e.stopPropagation(); // Prevent event bubbling
-                if (confirm("هل أنت متأكد من حذف هذه السيارة؟")) {
-                  await deleteCar(car.id!);
-                  // Optional: Refresh the page or redirect to dashboard after delete
-                  if (pathname.includes("/cars/")) {
-                    router.push("/dashboard"); // or wherever appropriate
-                  }
-                }
-              }}
-              className="bg-red-500 text-white px-3 py-1 w-full rounded-[26px] hover:bg-red-600"
-            >
-              حذف
-            </button>
-          </div>
-        )}
       </div>
     );
   });
 
   return (
     <div
-      className={`flex flex-col items-center overflow-hidden   gap-4 ${
-        isHomePage ? "w-screen" : "w-full"
-      } bg-[#FDB800]`}
+      className="flex flex-col items-center overflow-hidden   gap-4  w-screen bg-[#FDB800]"
       style={{ direction: "rtl" }}
     >
-      <div className="px-[10%] mt-4 w-full flex flex-row justify-between items-center gap-4">
-        <h1 className="text-[4vw] md:text-[3vw] lg:text-[1.8vw] font-bold text-center md:text-right text-gray-900">
-          المعروضــات ✨
+      <div className="px-[10%] lg:px-0 mt-4 w-[87%] md:w-[70%]  flex flex-row justify-between items-center gap-4">
+        <h1 className="text-[4vw] md:text-[3vw] lg:text-[1.4vw] font-bold text-center md:text-right text-gray-900">
+          {showAll ? "كل المعروضات" : "أحدث المعروضــات ✨"}
         </h1>
 
         {/* Dropdown فلتر الـ brands */}
-        <div className="relative w-[35%] md:w-[25%]">
+        <div className="relative w-[35%] md:w-[20%]">
           {/* Dropdown Button */}
           <div className="relative ">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="bg-white border w-full border-gray-300    rounded-[14px] p-1 text-[3vw] md:text-[1.2vw] lg:text-[0.9vw] font-medium text-gray-800 hover:bg-gray-50 transition-colors flex items-center gap-2  justify-between"
+              className="bg-white border w-full border-gray-300    rounded-[14px] p-1 text-[3vw] md:text-[1.2vw] lg:text-[0.8vw] font-medium text-gray-800 hover:bg-gray-50 transition-colors flex items-center gap-2  justify-between"
             >
-              <span className="text-[2.5vw] md:text-[1.5vw]">
+              <span className="text-[2.5vw] md:text-[1.5vw] lg:text-[1vw] p-1">
                 {getSelectedBrandDisplayName()}
               </span>
               <svg
@@ -236,11 +193,11 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
 
             {isDropdownOpen && (
               <div className=" absolute top-full  mt-1 w-full bg-white border  border-gray-300 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                {filteredCars.length !== cars.length && (
+                {filteredCars.length !== availableCars.length && (
                   <button
                     aria-label="all cars button"
                     onClick={() => handleBrandSelect("all")}
-                    className={`w-full text-right p-2  text-[2.5vw] md:text-[1.2vw] hover:bg-gray-100 transition-colors ${
+                    className={`w-full text-right font-semibold p-2  text-[2.5vw] md:text-[1.2vw] lg:text-[1vw] hover:bg-gray-100 transition-colors ${
                       selectedBrand === "all"
                         ? "bg-gray-100 text-gray-800"
                         : "text-gray-700"
@@ -254,7 +211,7 @@ const HomeCars = ({ isDashboard = false, onEditCar }: HomeCarsProps) => {
                   <button
                     key={brand}
                     onClick={() => handleBrandSelect(brand)}
-                    className={`w-full text-right px-4 py-2 text-[2.5vw] md:text-[1.2vw] hover:bg-gray-100 transition-colors ${
+                    className={`w-full font-semibold  text-right px-4 py-2 text-[2.5vw] md:text-[1.2vw] lg:text-[1vw] hover:bg-gray-100 transition-colors ${
                       selectedBrand === brand
                         ? "bg-gray-100 text-gray-800"
                         : "text-gray-700"
