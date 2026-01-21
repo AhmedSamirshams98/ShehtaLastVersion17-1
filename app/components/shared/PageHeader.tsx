@@ -52,7 +52,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                   key={index}
                   type="button"
                   onClick={action.onClick}
-                  variant={action.variant ?? "default"}
+                  // variant={action.variant ?? "default"}
                   className={cn("flex items-center gap-2 px-4 py-2 text-sm rounded-lg cursor-pointer ", action.className)}
                 >
                   {action.loading ? <Loader className="w-4 h-4 animate-spin" />: <>

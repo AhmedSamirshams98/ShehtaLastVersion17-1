@@ -54,9 +54,9 @@ const Nav = () => {
       }}
     >
       {isMobile ? (
-        <MobileNav isDashboard={isDashboard} />
+        <MobileNav />
       ) : (
-        <DesktopNav isDashboard={isDashboard} />
+        <DesktopNav />
       )}
     </header>
   );

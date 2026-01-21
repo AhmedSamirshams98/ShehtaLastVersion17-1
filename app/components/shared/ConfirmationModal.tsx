@@ -111,7 +111,6 @@ export function ConfirmationModal({
 
               <DialogFooter className="mt-6 flex justify-center sm:justify-end gap-2 sm:gap-4">
                 <Button
-                  variant="outline"
                   onClick={handleCancel}
                   disabled={isConfirming}
                   className={cn(
@@ -127,7 +126,6 @@ export function ConfirmationModal({
                   {cancelText}
                 </Button>
                 <Button
-                  variant={variant}
                   onClick={handleConfirm}
                   disabled={isConfirming}
                   className={cn(

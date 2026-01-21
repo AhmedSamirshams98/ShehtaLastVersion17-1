@@ -5,7 +5,6 @@ import HomeCars from "./components/HomeComponents/HomeCars";
 import HomeHowtoOrder from "./components/HomeComponents/HomeHowtoOrder";
 import HomeReels from "./components/HomeComponents/HomeReels";
 import HomeClients from "./components/HomeComponents/HomeClients";
-import AllCars from "./components/HomeComponents/AllCars";
 
 const page = () => {
   return (

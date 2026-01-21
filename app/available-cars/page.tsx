@@ -111,10 +111,10 @@ const AvailableCarsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => {
-            const slides = car.images.map((img, i) => (
+            const slides = car.car_images.map((img, i) => (
               <div key={i} className="relative w-full aspect-square">
                 <Image
-                  src={img}
+                  src={img.image_url}
                   fill
                   alt={car.model}
                   className="object-cover rounded-[26px]"
