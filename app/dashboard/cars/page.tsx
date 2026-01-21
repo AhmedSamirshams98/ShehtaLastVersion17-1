@@ -568,7 +568,6 @@ export default function DashboardCarsPage() {
   );
 }
 
-// ترجمة الماركات
 function getBrandArabicName(brand: string): string {
   const map: Record<string, string> = {
     MercedesBenz: "مرسيدس",
@@ -583,6 +582,19 @@ function getBrandArabicName(brand: string): string {
     Peugeot: "بيجو",
     MG: "إم جي",
     Golf: "جولف",
+    Opel: "أوبل",
+    BMW: "بي إم دبليو",
+    Kia: "كيا",
+    MiniCooper: "ميني كوبر",
+    Fiat: "فيات",
+    Honda: "هوندا",
+    Hyundai: "هيونداي",
+    Lancer: "لانسر",
+    Volvo: "فولفو",
+    LandRover: "لاند روفر",
+    Porsche: "بورش",
+    Suzuki: "سوزوكي",
+    Mazda: "مازدا",
   };
   return map[brand] || brand;
 }

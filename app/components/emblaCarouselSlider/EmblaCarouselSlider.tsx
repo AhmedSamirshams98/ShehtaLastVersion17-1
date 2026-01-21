@@ -19,7 +19,10 @@ type PropType = {
 const EmblaCarouselSlider: React.FC<PropType> = (props) => {
   const pathname = usePathname();
 
-  const aspectClass = pathname === "/" ? "aspect-square" : "aspect-video";
+  const aspectClass =
+    pathname === "/" || pathname === "/allcars"
+      ? "aspect-square"
+      : "aspect-video";
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
 

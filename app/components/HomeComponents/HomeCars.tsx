@@ -39,7 +39,7 @@ const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
     } else {
       if (!availableCars || availableCars.length === 0) fetchAvailableCars();
     }
-  }, [showAll, fetchAvailableCars, fetchCars, availableCars, cars]);
+  }, [showAll, fetchAvailableCars, fetchCars]);
 
   const carsToShow = showAll ? cars : availableCars;
 

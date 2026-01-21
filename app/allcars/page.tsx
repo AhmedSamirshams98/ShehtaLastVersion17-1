@@ -58,11 +58,11 @@ const Page = () => {
 
   return (
     <div
-      className="min-h-screen px-[8%] mt-[2%] mb-[2%]"
+      className="min-h-screen px-[8%] lg:px-[16%] mt-[2%] mb-[2%]"
       style={{ direction: "rtl" }}
     >
       {/* Header with Filter Dropdown */}
-      <div className="flex flex-row justify-between items-center mb-[6%] mt-[6%]">
+      <div className="flex flex-row justify-between items-center mb-[6%] mt-[2%]">
         <h1 className="text-[4vw] md:text-[3vw] lg:text-[2vw] font-bold text-gray-900">
           المعروضــات ✨
         </h1>
@@ -139,13 +139,13 @@ const Page = () => {
       </div>
 
       {/* Cars Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => {
-            const carSlides = car.images.map((img, index) => (
+            const carSlides = car.car_images.map((img, index) => (
               <div key={index} className="slider-slide object-cover">
                 <Image
-                  src={img}
+                  src={img.image_url}
                   fill
                   alt={`${car.brand} ${car.model}`}
                   className="object-cover w-full aspect-square rounded-[26px]"
