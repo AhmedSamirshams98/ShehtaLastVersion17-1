@@ -113,6 +113,19 @@ const Footer = () => {
             </Button>
           </Link>
         </div>
+        <div className="px-4 py-3 hidden lg:flex flex-col items-center gap-2">
+          <p className="text-xs text-white/80 text-center">
+            © {new Date().getFullYear()} شحتة للتجارة
+          </p>
+          <Link
+            href="https://wa.me/201000094180"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/80 hover:text-primary transition-colors duration-200 underline"
+          >
+            Made With ❤️ By: Rafeeq.Academy Teams
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 items-center md:items-start">
@@ -159,6 +172,19 @@ const Footer = () => {
               height={35}
               alt="صفحة تيك توك شحتة للتجارة"
             />
+          </Link>
+        </div>
+        <div className="px-4 py-3 flex flex-col lg:hidden items-center gap-2">
+          <p className="text-xs text-white/80 text-center">
+            © {new Date().getFullYear()} شحتة للتجارة
+          </p>
+          <Link
+            href="https://wa.me/201000094180"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/80 hover:text-primary transition-colors duration-200 underline"
+          >
+            Made With ❤️ By: Rafeeq.Academy Teams
           </Link>
         </div>
       </div>

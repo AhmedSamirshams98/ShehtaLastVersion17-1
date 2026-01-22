@@ -177,7 +177,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               © {new Date().getFullYear()} شحتة للتجارة
             </p>
             <Link
-              href="https://wa.me/"
+              href="https://wa.me/201000094180"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-muted-foreground hover:text-primary transition-colors duration-200 underline"
