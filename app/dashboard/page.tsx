@@ -304,7 +304,6 @@ export default function DashboardPage() {
               <th className="px-4 py-2 text-right">السعر</th>
               <th className="px-4 py-2 text-right">الحالة</th>
               <th className="px-4 py-2 text-right">التوفر</th>
-              <th className="px-4 py-2 text-right">الوصف</th>
               <th className="px-4 py-2 text-right">تعديل</th>
               <th className="px-4 py-2 text-right">حذف</th>
             </tr>
@@ -334,7 +333,6 @@ export default function DashboardPage() {
                 <td className="px-4 py-2">{car.condition}</td>
                 <td className="px-4 py-2">{statusInArabic(car.status)}</td>
                 <td className="px-4 py-2">{car.status}</td>
-                <td className="px-4 py-2">{car.description ?? "-"}</td>
                 <td className="px-4 py-2">
                   <button
                     onClick={() => handleEditCarFromTable(car)}
@@ -499,8 +497,8 @@ export default function DashboardPage() {
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  rows={3}
-                  className="p-2 border rounded"
+                  rows={5}
+                  className="p-2 min-h-[120px] max-h-[300px] overflow-y-auto border rounded"
                   disabled={isSubmitting}
                 />
               </label>

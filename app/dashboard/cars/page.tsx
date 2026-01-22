@@ -74,7 +74,7 @@ export default function DashboardCarsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const carBrands = [
-    "Porshe",
+    "Porcshe",
     "Toyota",
     "Jeep",
     "Nissan",
@@ -348,7 +348,6 @@ export default function DashboardCarsPage() {
               <th className="px-4 py-2 text-right">السعر</th>
               <th className="px-4 py-2 text-right">الحالة</th>
               <th className="px-4 py-2 text-right">التوفر</th>
-              <th className="px-4 py-2 text-right">الوصف</th>
               <th className="px-4 py-2 text-right">الإجراءات</th>
             </tr>
           </thead>
@@ -370,14 +369,13 @@ export default function DashboardCarsPage() {
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-2">{getBrandArabicName(car.brand)}</td>
+                <td className="px-4 py-2">{car.brand}</td>
                 <td className="px-4 py-2">{car.model}</td>
                 <td className="px-4 py-2">{car.year}</td>
                 <td className="px-4 py-2">{car.kilometers ?? "-"}</td>
                 <td className="px-4 py-2">{priceForDisplay(car.price)}</td>
                 <td className="px-4 py-2">{car.condition}</td>
                 <td className="px-4 py-2">{statusInArabic(car.status)}</td>
-                <td className="px-4 py-2">{car.description ?? "-"}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <button
                     onClick={() => handleEditCar(car)}
@@ -531,8 +529,8 @@ export default function DashboardCarsPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   disabled={isSubmitting}
-                  rows={3}
-                  className="p-2 border rounded"
+                  rows={5}
+                  className="min-h-[120px] max-h-[300px] overflow-y-auto p-2 border rounded"
                 />
               </label>
 
@@ -634,35 +632,4 @@ export default function DashboardCarsPage() {
       )}
     </section>
   );
-}
-
-function getBrandArabicName(brand: string): string {
-  const map: Record<string, string> = {
-    MercedesBenz: "مرسيدس",
-    Audi: "أودي",
-    Volkswagen: "فولكس فاجن",
-    Ford: "فورد",
-    Chevrolet: "شيفروليه",
-    Nissan: "نيسان",
-    Skoda: "سكودا",
-    Jeep: "جيب",
-    Seat: "سيات",
-    Peugeot: "بيجو",
-    MG: "إم جي",
-    Golf: "جولف",
-    Opel: "أوبل",
-    BMW: "بي إم دبليو",
-    Kia: "كيا",
-    MiniCooper: "ميني كوبر",
-    Fiat: "فيات",
-    Honda: "هوندا",
-    Hyundai: "هيونداي",
-    Lancer: "لانسر",
-    Volvo: "فولفو",
-    LandRover: "لاند روفر",
-    Porsche: "بورش",
-    Suzuki: "سوزوكي",
-    Mazda: "مازدا",
-  };
-  return map[brand] || brand;
 }

@@ -65,7 +65,7 @@ const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
 
   const getSelectedBrandDisplayName = () => {
     if (selectedBrand === "all") return "كل السيارات";
-    return getBrandArabicName(selectedBrand);
+    return selectedBrand;
   };
 
   const aboutSlides = filteredCars?.map((car) => {
@@ -217,7 +217,7 @@ const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
                         : "text-gray-700"
                     }`}
                   >
-                    {getBrandArabicName(brand)}
+                    {brand}
                   </button>
                 ))}
               </div>
@@ -255,38 +255,5 @@ const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
     </div>
   );
 };
-
-// دالة للحصول على الاسم العربي للـ brand
-function getBrandArabicName(brand: string): string {
-  const brandMap: { [key: string]: string } = {
-    MercedesBenz: "مرسيدس",
-    Audi: "اودي",
-    Volkswagen: "فولكس فاجن", // Check this line carefully
-    Ford: "فورد",
-    Mitsubishi: "ميتسوبيشي",
-    Chevrolet: "شيفروليه",
-    Nissan: "نيسان",
-    Skoda: "سكودا",
-    Jeep: "جيب",
-    Seat: "سيات",
-    Peugot: "بيجو",
-    Fiat: "فيات",
-    Peugeot: "بيجو",
-    SEAT: "سيات",
-    Renault: "رينو",
-    Chery: "تشيري",
-    Honda: "هوندا",
-    BYD: "بي واي دي",
-    Geely: "جيلي",
-    MG: "ام جي",
-    Golf: "جولف",
-    Toyota: "تويوتا",
-    Hyundai: "هيونداي",
-    Kia: "كيا",
-    BMW: "بي ام دبليو",
-  };
-
-  return brandMap[brand] || brand;
-}
 
 export default HomeCars;
