@@ -11,6 +11,8 @@ export async function GET() {
   try {
     const cars = await prisma.cars.findMany({
       include: { car_images: true },
+        orderBy: { created_at: "asc" }, // الأقدم أولًا
+
     });
 
     const formattedCars = cars.map((car) => ({
