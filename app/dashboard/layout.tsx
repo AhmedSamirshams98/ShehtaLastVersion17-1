@@ -56,7 +56,7 @@ export default function DashboardLayout({
     }
   }, [pathname, userRole, loading, router, restrictedRoutes]);
 
-  if (loading) return <UniLoading />;
+  if (loading && !user) return <UniLoading />;
   if (isLoginPage) return <>{children}</>;
   if (
     restrictedRoutes.includes(pathname) &&

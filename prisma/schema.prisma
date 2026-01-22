@@ -48,6 +48,7 @@ model cars {
   condition   String // وأضف هذا الحقل
   description String?
   kilometers  Int?
+  price       Int?
   status      CarStatus    @default(available)
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
@@ -70,4 +71,19 @@ model forms {
   // No relations - independent table
 
   @@map("forms")
+}
+
+
+model Reel {
+  id        Int      @id @default(autoincrement())
+  src       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClientsVideo {
+  id        Int      @id @default(autoincrement())
+  src       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

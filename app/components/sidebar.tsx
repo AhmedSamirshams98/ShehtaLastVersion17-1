@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CarIcon, HomeIcon, UsersIcon, ClipboardList, X } from "lucide-react";
+import {
+  CarIcon,
+  HomeIcon,
+  UsersIcon,
+  ClipboardList,
+  X,
+  Video,
+  UserPlus2Icon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -18,7 +26,7 @@ const sidebarItems = [
   {
     title: "المستخدمين",
     href: "/dashboard/users",
-    icon: UsersIcon,
+    icon: UserPlus2Icon,
     roles: ["admin", "superadmin"], // فقط admin
   },
   {
@@ -31,6 +39,12 @@ const sidebarItems = [
     title: "الطلبات",
     href: "/dashboard/forms",
     icon: ClipboardList,
+    roles: ["admin", "superadmin"], // فقط admin
+  },
+  {
+    title: "        أحدث الفيديوهات",
+    href: "/dashboard/videos",
+    icon: Video,
     roles: ["admin", "superadmin"], // فقط admin
   },
 ];

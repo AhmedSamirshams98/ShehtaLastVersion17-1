@@ -1,7 +1,6 @@
 // app/api/cars/route.ts
 import { NextResponse } from "next/server";
 
-
 import prisma from "@/lib/prisma";
 import fs from "fs";
 import path from "path";
@@ -26,7 +25,7 @@ export async function GET() {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch cars" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -40,31 +39,41 @@ export async function POST(request: Request) {
     const condition = formData.get("condition") as string;
     const description = formData.get("description") as string;
     const kilometers = parseInt(formData.get("kilometers") as string) || 0;
-        const statusStr = formData.get("status")?.toString();
+    const price = parseInt(formData.get("price") as string) || 0;
+    const statusStr = formData.get("status")?.toString();
 
-    const carStatus: CarStatusType = statusStr === "unavailable" ? "unavailable" : "available";
+    const carStatus: CarStatusType =
+      statusStr === "unavailable" ? "unavailable" : "available";
 
     // Validate required fields
     if (!brand || !model) {
       return NextResponse.json(
         { error: "العلامة التجارية والموديل مطلوبان" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // CHANGED: Store uploads OUTSIDE public folder (in root/uploads)
     const uploadDir = path.join(process.cwd(), "uploads");
-    
+
     // Create upload directory with proper permissions
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
       fs.chmodSync(uploadDir, 0o755);
     }
 
-
     // Create car record first
     const car = await prisma.cars.create({
-      data: { brand, model, year, condition, description, kilometers,  status: carStatus },
+      data: {
+        brand,
+        model,
+        year,
+        condition,
+        description,
+        kilometers,
+        price,
+        status: carStatus,
+      },
     });
 
     const files = formData.getAll("images") as File[];
@@ -75,24 +84,24 @@ export async function POST(request: Request) {
       await prisma.cars.delete({ where: { id: car.id } });
       return NextResponse.json(
         { error: "يجب إضافة صورة واحدة على الأقل" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     for (const file of files) {
       try {
         // Validate file type
-        if (!file.type.startsWith('image/')) {
+        if (!file.type.startsWith("image/")) {
           console.warn(`Skipping non-image file: ${file.name}`);
           continue;
         }
 
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        
+
         // Create safe filename
         const timestamp = Date.now();
-        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
         const fileName = `${timestamp}-${safeName}`;
         const filePath = path.join(uploadDir, fileName);
 
@@ -109,7 +118,6 @@ export async function POST(request: Request) {
         });
 
         console.log(`Successfully saved image: ${fileName}`);
-
       } catch (fileError) {
         console.error(`Error processing file ${file.name}:`, fileError);
       }
@@ -118,10 +126,10 @@ export async function POST(request: Request) {
     // Check if any images were successfully saved
     if (savedImages.length === 0) {
       await prisma.cars.delete({ where: { id: car.id } });
-      
+
       return NextResponse.json(
         { error: "فشل في حفظ الصور. يرجى المحاولة مرة أخرى" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -130,7 +138,7 @@ export async function POST(request: Request) {
     console.error("Car creation error:", error);
     return NextResponse.json(
       { error: "فشل في إضافة السيارة" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

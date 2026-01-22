@@ -1,8 +1,8 @@
 "use client";
 
+import { useUserStore } from "@/stores/userStore";
 import React, { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
-import { useUserManagementStore } from "@/stores/userManagementStore";
 
 const DashboardUsersPage = () => {
   const {
@@ -16,7 +16,7 @@ const DashboardUsersPage = () => {
     setShowPopup,
     newUser,
     setNewUser,
-  } = useUserManagementStore();
+  } = useUserStore();
 
   useEffect(() => {
     fetchSession();

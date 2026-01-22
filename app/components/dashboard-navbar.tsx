@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LogOut, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -10,17 +9,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import { ConfirmationModal } from "./shared/ConfirmationModal";
 
+import { useUserStore } from "@/stores/userStore";
+import { useEffect, useState } from "react";
+
 type DashboardNavbarProps = {
   isSidebarOpen?: boolean;
   onToggleSidebar?: () => void;
 };
-
-interface User {
-  id: number;
-  name: string | null;
-  email: string;
-  role: string;
-}
 
 export function DashboardNavbar({
   isSidebarOpen = false,
@@ -28,56 +23,25 @@ export function DashboardNavbar({
 }: DashboardNavbarProps) {
   const router = useRouter();
 
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, fetchUser, logout } = useUserStore();
+
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
 
-  /* ===== جلب المستخدم ===== */
+  // جلب المستخدم عند تحميل الصفحة
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("/api/auth/me", {
-          credentials: "include",
-        });
-
-        if (!res.ok) {
-          router.replace("/dashboard/login");
-          return;
-        }
-
-        const data = await res.json();
-
-        if (!data.user) {
-          router.replace("/dashboard/login");
-          return;
-        }
-
-        setUser(data.user);
-      } catch (err) {
-        console.error("Session error:", err);
+    fetchUser().then((data) => {
+      if (!useUserStore.getState().user) {
         router.replace("/dashboard/login");
-      } finally {
-        setLoading(false);
       }
-    };
+    });
+  }, [fetchUser, router]);
 
-    fetchUser();
-  }, [router]);
-
-  /* ===== تسجيل الخروج ===== */
   const handleLogout = async () => {
     setLogoutLoading(true);
     try {
-      const res = await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        setUser(null);
-        router.replace("/login");
-      }
+      await logout();
+      router.replace("/login");
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
@@ -97,7 +61,7 @@ export function DashboardNavbar({
   }
 
   return (
-    <nav className="border-b border-border bg-[#3b2606ee]  text-sidebar-primary-foreground shadow-md shadow-sidebar-primary/20 backdrop-blur">
+    <nav className="border-b border-border bg-[#3b2606ee] text-sidebar-primary-foreground shadow-md shadow-sidebar-primary/20 backdrop-blur">
       <div className="flex h-16 items-center justify-between px-4">
         {/* Left */}
         <div className="flex items-center gap-4">
@@ -129,7 +93,7 @@ export function DashboardNavbar({
                 <span className="text-sm text-white font-semibold leading-tight">
                   {user.name}
                 </span>
-                <span className="text-xs text-white  capitalize mt-0.5">
+                <span className="text-xs text-white capitalize mt-0.5">
                   {user.role}
                 </span>
               </div>

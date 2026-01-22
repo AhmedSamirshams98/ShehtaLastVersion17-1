@@ -28,6 +28,7 @@ interface Car {
   condition: string;
   kilometers?: number;
   description?: string;
+  price: number;
   status: string;
   car_images: CarImage[];
 }
@@ -40,6 +41,7 @@ interface CarFormData {
   kilometers?: number;
   description?: string;
   status: string;
+  price: number;
   imageFiles: File[];
   existingImages: string[];
 }
@@ -47,6 +49,8 @@ interface CarFormData {
 export default function DashboardCarsPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [price, setPrice] = useState("");
+
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,6 +66,7 @@ export default function DashboardCarsPage() {
     condition: "جديدة",
     description: "",
     kilometers: 0,
+    price: 0,
     status: "available",
     imageFiles: [],
     existingImages: [],
@@ -118,16 +123,33 @@ export default function DashboardCarsPage() {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      setLoading(true);
-      await fetchSession();
-      await fetchAllCars();
-      setLoading(false);
+      try {
+        setLoading(true);
+        await fetchSession();
+        await fetchAllCars();
+        console.log("Session:", currentUser);
+        console.log("Cars:", cars);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchAllData();
   }, []);
 
   if (loading) return <UniLoading />;
 
+  function statusInArabic(status: string) {
+    if (status === "available") return "متاحة";
+    if (status === "unavailable") return "غير متاحة";
+    return "-";
+  }
+
+  function priceForDisplay(price: number | undefined) {
+    if (price === undefined || price === null) return "-";
+    return price.toLocaleString("en-US"); // يفصل بالألف
+  }
   // ------------------ Handlers ------------------
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -138,7 +160,9 @@ export default function DashboardCarsPage() {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "year" || name === "kilometers" ? parseInt(value) || 0 : value,
+        name === "year" || name === "kilometers" || name === "price"
+          ? parseInt(value) || 0
+          : value,
     }));
   };
 
@@ -176,6 +200,7 @@ export default function DashboardCarsPage() {
       condition: "جديدة",
       description: "",
       kilometers: 0,
+      price: 0,
       status: "available",
       imageFiles: [],
       existingImages: [],
@@ -206,6 +231,7 @@ export default function DashboardCarsPage() {
       condition: formData.condition,
       description: formData.description,
       kilometers: formData.kilometers,
+      price: price ? Number(price.replace(/,/g, "")) : 0,
       status: formData.status,
       images: allImages,
     };
@@ -241,6 +267,7 @@ export default function DashboardCarsPage() {
       data.append("condition", formData.condition);
       data.append("description", formData.description || "");
       data.append("kilometers", (formData.kilometers || 0).toString());
+      data.append("price", price ? price.replace(/,/g, "") : "0");
       data.append("status", formData.status);
 
       formData.imageFiles.forEach((file) => {
@@ -273,10 +300,13 @@ export default function DashboardCarsPage() {
       condition: car.condition || "جديدة",
       description: car.description || "",
       kilometers: car.kilometers || 0,
+      price: car.price || 0,
       status: car.status || "available",
       imageFiles: [],
       existingImages: car.car_images.map((img) => img.image_url) || [],
     });
+    setPrice(car.price?.toLocaleString("en-US") || "");
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -314,6 +344,7 @@ export default function DashboardCarsPage() {
               <th className="px-4 py-2 text-right">الموديل</th>
               <th className="px-4 py-2 text-right">السنة</th>
               <th className="px-4 py-2 text-right">الكيلومترات</th>
+              <th className="px-4 py-2 text-right">السعر</th>
               <th className="px-4 py-2 text-right">الحالة</th>
               <th className="px-4 py-2 text-right">التوفر</th>
               <th className="px-4 py-2 text-right">الوصف</th>
@@ -342,8 +373,9 @@ export default function DashboardCarsPage() {
                 <td className="px-4 py-2">{car.model}</td>
                 <td className="px-4 py-2">{car.year}</td>
                 <td className="px-4 py-2">{car.kilometers ?? "-"}</td>
+                <td className="px-4 py-2">{priceForDisplay(car.price)}</td>
                 <td className="px-4 py-2">{car.condition}</td>
-                <td className="px-4 py-2">{car.status}</td>
+                <td className="px-4 py-2">{statusInArabic(car.status)}</td>
                 <td className="px-4 py-2">{car.description ?? "-"}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <button
@@ -439,7 +471,27 @@ export default function DashboardCarsPage() {
                     className="p-2 border rounded"
                   />
                 </label>
-
+                {formData.status === "available" && (
+                  <label className="flex flex-col gap-2">
+                    السعر
+                    <input
+                      type="text"
+                      name="price"
+                      value={price}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+                        const formatted = value.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ",",
+                        );
+                        setPrice(formatted);
+                      }}
+                      placeholder="سعر السيارة"
+                      inputMode="numeric"
+                      className="p-2 border rounded"
+                    />
+                  </label>
+                )}
                 <label className="flex flex-col gap-2">
                   الحالة
                   <select
@@ -529,14 +581,29 @@ export default function DashboardCarsPage() {
                 </div>
               )}
 
-              <div className="mt-4">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  disabled={isSubmitting}
-                />
+              <div className="mt-4 border-2 border-black p-2 ">
+                <label
+                  htmlFor="car-images"
+                  className="flex flex-col items-center justify-center w-full h-40
+             border-2 border-dashed rounded-xl cursor-pointer
+             text-gray-500 hover:border-gray-400 hover:text-gray-700
+             transition"
+                >
+                  <span className="text-sm">ضع صور السيارة</span>
+                  <span className="text-xs mt-1">
+                    (يمكنك اختيار أكثر من صورة)
+                  </span>
+
+                  <input
+                    id="car-images"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    disabled={isSubmitting}
+                    className="hidden"
+                  />
+                </label>
               </div>
 
               <div className="flex gap-4 mt-4">

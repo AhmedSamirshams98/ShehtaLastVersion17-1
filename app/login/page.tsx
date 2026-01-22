@@ -21,7 +21,7 @@ export default function LoginPage() {
         return;
       }
       if (data.user.role === "admin" || data.user.role === "superadmin") {
-        router.push("/dashboard/cars");
+        router.push("/dashboard");
       } else {
         router.push("/"); // المستخدم العادي
       }
@@ -31,7 +31,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-50"
+      dir="rtl"
+    >
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">تسجيل الدخول</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}

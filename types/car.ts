@@ -11,13 +11,12 @@ export interface Car {
   year: number;
   condition: string;
   description: string;
+  price?: number;
   kilometers: number;
   status: string;
   car_images: CarImage[]; // ✅ لا يمكن أن تكون undefined بعد تحميل البيانات من Prisma
-    images?: string[]; // ✅ أضف هذا لتجنب الخطأ
-
+  images?: string[]; // ✅ أضف هذا لتجنب الخطأ
 }
-
 
 export interface CarFormData {
   brand: string;
@@ -25,6 +24,7 @@ export interface CarFormData {
   year: number;
   condition: string;
   kilometers?: number;
+  price?: number;
   description?: string;
   status: string;
   imageFiles: File[];
@@ -38,7 +38,8 @@ export interface CarResponse {
   year: number; // إضافة
   condition: string; // إضافة
   description?: string;
-  kilometers?: number;  
+  price?:number;
+  kilometers?: number;
   status: string;
   images: string[];
   created_at: string;

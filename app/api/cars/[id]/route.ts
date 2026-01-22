@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -13,20 +13,19 @@ export async function GET(
     if (isNaN(carId)) {
       return NextResponse.json(
         { error: "معرف السيارة غير صحيح" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const car = await prisma.cars.findUnique({
       where: { id: carId },
-           include: { car_images: true },
-
+      include: { car_images: true },
     });
 
     if (!car) {
       return NextResponse.json(
         { error: "السيارة غير موجودة" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -35,11 +34,10 @@ export async function GET(
       brand: car.brand,
       model: car.model,
       description: car.description,
-            condition: car.condition,
-
-                  year: car.year,
-
+      condition: car.condition,
+      year: car.year,
       kilometers: car.kilometers,
+      price: car.price,
       status: car.status,
       images: car.car_images.map((img) => img.image_url),
       created_at: car.created_at.toISOString(),
@@ -51,14 +49,14 @@ export async function GET(
     console.error("❌ Error fetching car:", error);
     return NextResponse.json(
       { error: "فشل في جلب بيانات السيارة" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -68,7 +66,7 @@ export async function PUT(
     if (isNaN(carId)) {
       return NextResponse.json(
         { error: "معرف السيارة غير صحيح" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -81,6 +79,7 @@ export async function PUT(
           year: data.year,
           condition: data.condition,
           description: data.description,
+          price:data.price,
           kilometers: data.kilometers,
           status: data.status,
           updated_at: new Date(),
@@ -114,6 +113,7 @@ export async function PUT(
       model: result.model,
       description: result.description,
       kilometers: result.kilometers,
+      price:result.price,
       status: result.status,
       images: result.car_images.map((img) => img.image_url),
       created_at: result.created_at.toISOString(),
@@ -125,14 +125,14 @@ export async function PUT(
     console.error("Error updating car:", error);
     return NextResponse.json(
       { error: "فشل في تحديث السيارة" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -141,7 +141,7 @@ export async function DELETE(
     if (isNaN(carId)) {
       return NextResponse.json(
         { error: "معرف السيارة غير صحيح" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -152,7 +152,7 @@ export async function DELETE(
     if (!existingCar) {
       return NextResponse.json(
         { error: "السيارة غير موجودة" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -168,7 +168,7 @@ export async function DELETE(
 
     return NextResponse.json(
       { message: "تم حذف السيارة بنجاح" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error deleting car:", error);

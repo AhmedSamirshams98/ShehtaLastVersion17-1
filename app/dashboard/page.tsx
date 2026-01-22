@@ -25,8 +25,8 @@ import { Car, CarFormData, User } from "@/types/car";
 export default function DashboardPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [price, setPrice] = useState("");
 
-  // ---- Modal & Editing state ----
   const [isEditing, setIsEditing] = useState(false);
   const [editingCar, setEditingCar] = useState<Car | null>(null);
   const [formData, setFormData] = useState<CarFormData>({
@@ -35,12 +35,24 @@ export default function DashboardPage() {
     year: new Date().getFullYear(),
     condition: "جديدة",
     description: "",
+    price: 0,
+
     kilometers: 0,
     status: "available",
     imageFiles: [],
     existingImages: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  function statusInArabic(status: string) {
+    if (status === "available") return "متاحة";
+    if (status === "unavailable") return "غير متاحة";
+    return "-";
+  }
+
+  function priceForDisplay(price: number | undefined) {
+    if (price === undefined || price === null) return "-";
+    return price.toLocaleString("en-US"); // يفصل بالألف
+  }
 
   const fetchSession = async () => {
     try {
@@ -87,10 +99,15 @@ export default function DashboardPage() {
       condition: car.condition || "جديدة",
       description: car.description || "",
       kilometers: car.kilometers || 0,
+      price: car.price || 0,
+
       status: car.status || "available",
       imageFiles: [],
       existingImages: car.car_images?.map((img) => img.image_url) || [],
     });
+    setPrice(car.price?.toLocaleString("en-US") || "");
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleInputChange = (
@@ -102,7 +119,9 @@ export default function DashboardPage() {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "year" || name === "kilometers" ? parseInt(value) || 0 : value,
+        name === "year" || name === "kilometers" || name === "price"
+          ? parseInt(value) || 0
+          : value,
     }));
   };
 
@@ -139,6 +158,8 @@ export default function DashboardPage() {
       condition: "جديدة",
       description: "",
       kilometers: 0,
+      price: 0,
+
       status: "available",
       imageFiles: [],
       existingImages: [],
@@ -176,6 +197,8 @@ export default function DashboardPage() {
       condition: formData.condition,
       description: formData.description,
       kilometers: formData.kilometers,
+      price: formData.price,
+
       status: formData.status,
       images: allImages,
     };
@@ -278,6 +301,7 @@ export default function DashboardPage() {
               <th className="px-4 py-2 text-right">الموديل</th>
               <th className="px-4 py-2 text-right">السنة</th>
               <th className="px-4 py-2 text-right">الكيلومترات</th>
+              <th className="px-4 py-2 text-right">السعر</th>
               <th className="px-4 py-2 text-right">الحالة</th>
               <th className="px-4 py-2 text-right">التوفر</th>
               <th className="px-4 py-2 text-right">الوصف</th>
@@ -306,8 +330,9 @@ export default function DashboardPage() {
                 <td className="px-4 py-2">{getBrandArabicName(car.brand)}</td>
                 <td className="px-4 py-2">{car.model}</td>
                 <td className="px-4 py-2">{car.year}</td>
-                <td className="px-4 py-2">{car.kilometers ?? "-"}</td>
+                <td className="px-4 py-2">{priceForDisplay(car.price)}</td>
                 <td className="px-4 py-2">{car.condition}</td>
+                <td className="px-4 py-2">{statusInArabic(car.status)}</td>
                 <td className="px-4 py-2">{car.status}</td>
                 <td className="px-4 py-2">{car.description ?? "-"}</td>
                 <td className="px-4 py-2">
@@ -414,6 +439,27 @@ export default function DashboardPage() {
                     disabled={isSubmitting}
                   />
                 </label>
+                {formData.status === "available" && (
+                  <label className="flex flex-col gap-2">
+                    السعر
+                    <input
+                      type="text"
+                      name="price"
+                      value={price}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+                        const formatted = value.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ",",
+                        );
+                        setPrice(formatted);
+                      }}
+                      placeholder="سعر السيارة"
+                      inputMode="numeric"
+                      className="p-2 border rounded"
+                    />
+                  </label>
+                )}
 
                 <label className="flex flex-col gap-2">
                   الحالة
