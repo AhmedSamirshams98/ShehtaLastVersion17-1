@@ -158,7 +158,7 @@ const HomeCars: React.FC<HomeCarsProps> = ({ showAll = false }) => {
       className="flex flex-col items-center overflow-hidden   gap-4  w-screen bg-[#FDB800]"
       style={{ direction: "rtl" }}
     >
-      <div className="px-[10%] lg:px-0 mt-4 w-[87%] md:w-[70%]  flex flex-row justify-between items-center gap-4">
+      <div className="px-[6%] lg:px-0 mt-4 w-full md:w-[70%]  flex flex-row justify-between items-center gap-4">
         <h1 className="text-[4vw] md:text-[3vw] lg:text-[1.4vw] font-bold text-center md:text-right text-gray-900">
           {showAll ? "كل المعروضات" : "أحدث المعروضــات ✨"}
         </h1>

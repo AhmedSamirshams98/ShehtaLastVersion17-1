@@ -65,17 +65,19 @@ export function DashboardNavbar({
       <div className="flex h-16 items-center justify-between px-4">
         {/* Left */}
         <div className="flex items-center gap-4">
-          <Button
-            className="lg:hidden"
-            onClick={() => onToggleSidebar?.()}
-            aria-label="Toggle sidebar"
-          >
-            {isSidebarOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
+          <div className="block md:hidden">
+            <Button
+              className="hidden"
+              onClick={() => onToggleSidebar?.()}
+              aria-label="Toggle sidebar"
+            >
+              {isSidebarOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
 
           <Link
             href="/dashboard"
@@ -104,7 +106,10 @@ export function DashboardNavbar({
             onClick={() => setIsLogoutModalOpen(true)}
             disabled={logoutLoading}
           >
-            {logoutLoading ? "جاري تسجيل الخروج..." : "تسجيل الخروج"}
+            <h1 className="font-semibold text-black/80">
+              {" "}
+              {logoutLoading ? "جاري تسجيل الخروج..." : "تسجيل الخروج"}
+            </h1>
           </Button>
         </div>
       </div>
