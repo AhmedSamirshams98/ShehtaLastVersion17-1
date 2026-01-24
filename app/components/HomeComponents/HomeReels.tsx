@@ -52,8 +52,16 @@ const HomeReels = ({ isDashboard, onDelete, onEdit }: Props) => {
     align: "center",
     containScroll: "trimSnaps",
   };
+  return (
+    <section className="w-full py-10">
+      {/* العنوان */}
+      <h2 className="text-center text-2xl md:text-3xl font-bold mb-6">
+        أحدث الفيديوهات
+      </h2>
 
-  return <EmblaCarousel slides={slides} options={options} />;
+      {/* الكاروسيل */}
+      <EmblaCarousel slides={slides} options={options} />
+    </section>
+  );
 };
-
 export default HomeReels;
