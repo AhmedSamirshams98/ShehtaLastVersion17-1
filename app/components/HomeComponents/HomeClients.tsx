@@ -2,54 +2,58 @@
 
 import React, { useEffect } from "react";
 import { EmblaOptionsType } from "embla-carousel";
-import "../emblaCarouselSlider/emblaCarouselSlider.css";
 import EmblaCarousel from "../emblaCarousel/EmblaCarousel";
 import { useVideoStore } from "@/stores/videoStore";
 
-const HomeClients = () => {
+interface Props {
+  isDashboard?: boolean;
+  onDelete?: (id: number) => void;
+  onEdit?: (src: string) => void;
+}
+
+const HomeClients = ({ isDashboard, onDelete, onEdit }: Props) => {
   const clients = useVideoStore((state) => state.clients);
   const fetchClients = useVideoStore((state) => state.fetchClients);
 
   useEffect(() => {
     fetchClients();
   }, [fetchClients]);
+
   const slides = clients.map((video) => (
-    <div key={video.id} className="flex justify-center px-2 h-full">
-      <div className="relative w-full mx-auto">
-        <div className="aspect-[9/16] w-full">
-          <iframe
-            src={video.src}
-            className="absolute top-0 left-0 w-full h-full rounded-[24px] border-0"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            allowFullScreen
-            scrolling="no"
-            loading="lazy"
-          />
+    <div key={video.id} className="relative px-2">
+      {isDashboard && (
+        <div className="absolute top-2 right-2 z-10 flex gap-2">
+          <button
+            onClick={() => onEdit?.(video.src)}
+            className="bg-yellow-500 text-white px-3 py-1 rounded text-xs"
+          >
+            تعديل
+          </button>
+          <button
+            onClick={() => onDelete?.(video.id)}
+            className="bg-red-600 text-white px-3 py-1 rounded text-xs"
+          >
+            حذف
+          </button>
         </div>
+      )}
+
+      <div className="aspect-[9/16] relative">
+        <iframe
+          src={video.src}
+          className="absolute inset-0 w-full h-full rounded-[24px]"
+          allowFullScreen
+        />
       </div>
     </div>
   ));
 
-  const emblaOptions: EmblaOptionsType = {
+  const options: EmblaOptionsType = {
     align: "center",
-    loop: false,
-    dragFree: false,
     containScroll: "trimSnaps",
   };
 
-  return (
-    <div id="clients" className="w-full mb-[10%]">
-      <h2 className="font-bold text-center text-[4vw] md:text-[2vw] mb-6 mt-2">
-        آراء العملاء
-      </h2>
-
-      <EmblaCarousel
-        slides={slides}
-        options={emblaOptions}
-        showViewAllButton={false}
-      />
-    </div>
-  );
+  return <EmblaCarousel slides={slides} options={options} />;
 };
 
 export default HomeClients;

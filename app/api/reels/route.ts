@@ -25,6 +25,34 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, src } = body;
+
+    if (!id || !src) {
+      return NextResponse.json(
+        { error: "id and src are required" },
+        { status: 400 }
+      );
+    }
+
+    const reel = await prisma.reel.update({
+      where: { id },
+      data: { src },
+    });
+
+    return NextResponse.json(reel);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+}
+
+
 export async function DELETE(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
