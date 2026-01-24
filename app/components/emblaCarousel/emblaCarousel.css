@@ -44,7 +44,7 @@
 .embla__container {
   display: flex;
   width: auto;
-  direction: rtl; /* إعادة تعيين الاتجاه للعناصر الداخلية */
+  direction: ltr; /* إعادة تعيين الاتجاه للعناصر الداخلية */
 
   margin-left: calc(var(--slide-spacing) * -1);
 }
