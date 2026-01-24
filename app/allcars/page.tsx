@@ -38,12 +38,21 @@ const Page = () => {
     (brand) => brand,
   );
 
-  // تصفية السيارات حسب الـ brand المختار
+  const sortedCars = [...cars].sort((a, b) => {
+    if (a.status === "available" && b.status !== "available") return -1;
+    if (a.status !== "available" && b.status === "available") return 1;
+    return 0;
+  });
+  // // تصفية السيارات حسب الـ brand المختار
+  // const filteredCars =
+  //   selectedBrand === "all"
+  //     ? cars
+  //     : cars.filter((car) => car.brand === selectedBrand);
+
   const filteredCars =
     selectedBrand === "all"
-      ? cars
-      : cars.filter((car) => car.brand === selectedBrand);
-
+      ? sortedCars
+      : sortedCars.filter((car) => car.brand === selectedBrand);
   // دالة لاختيار brand من الدروب داون
   const handleBrandSelect = (brand: string) => {
     setSelectedBrand(brand);
@@ -53,7 +62,7 @@ const Page = () => {
   // دالة للحصول على الاسم المعروض للبراند المختار
   const getSelectedBrandDisplayName = () => {
     if (selectedBrand === "all") return "كل السيارات";
-    return getBrandArabicName(selectedBrand);
+    return selectedBrand;
   };
 
   return (
@@ -121,7 +130,7 @@ const Page = () => {
                         : "text-gray-700"
                     }`}
                   >
-                    {getBrandArabicName(brand)}
+                    {brand}
                   </button>
                 ))}
               </div>
@@ -173,7 +182,7 @@ const Page = () => {
                   </h3>
                   <div className="flex justify-between">
                     <h1 className="text-black text-[3vw] md:text-[2vw] lg:text-[1.5vw] xl:text-[1vw] font-medium">
-                      {getBrandArabicName(car.brand)}
+                      {car.brand}
                     </h1>
                     <div className="flex gap-4">
                       <h1 className="text-black text-[3vw] md:text-[2vw] lg:text-[1.5vw] xl:text-[1vw] font-medium">
@@ -244,25 +253,5 @@ const Page = () => {
     </div>
   );
 };
-
-// دالة للحصول على الاسم العربي للـ brand
-function getBrandArabicName(brand: string): string {
-  const brandMap: { [key: string]: string } = {
-    MercedesBenz: "مرسيدس",
-    Audi: "اودي",
-    Volkswagen: "فولكس فاجن",
-    Ford: "فورد",
-    Chevrolet: "شيفروليه",
-    Nissan: "نيسان",
-    Skoda: "سكودا",
-    Jeep: "جيب",
-    Seat: "سيات",
-    Peugot: "بيجو",
-    MG: "ام جي",
-    Golf: "جولف",
-  };
-
-  return brandMap[brand] || brand;
-}
 
 export default Page;

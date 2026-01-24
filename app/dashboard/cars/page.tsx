@@ -75,6 +75,7 @@ export default function DashboardCarsPage() {
 
   const carBrands = [
     "Porcshe",
+    "Cupra",
     "Toyota",
     "Jeep",
     "Nissan",
