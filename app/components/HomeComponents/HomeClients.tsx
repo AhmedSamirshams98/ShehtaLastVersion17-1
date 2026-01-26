@@ -63,6 +63,6 @@ return (
     {/* الكاروسيل */}
     <EmblaCarousel slides={slides} options={options} />
   </section>
-);};
+);  };
 
 export default HomeClients;
