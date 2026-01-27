@@ -53,6 +53,9 @@ export default function DashboardCarsPage() {
 
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Modal & Editing state
   const [isEditing, setIsEditing] = useState(false);
@@ -113,22 +116,42 @@ export default function DashboardCarsPage() {
   };
 
   // ------------------ Fetch Cars ------------------
-  const fetchAllCars = async () => {
+  // const fetchAllCars = async () => {
+  //   try {
+  //     const res = await fetch("/api/cars");
+  //     const data = await res.json();
+  //     setCars(data.cars || data); // تأكد من البنية
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  const fetchAllCars = async (loadMore = false) => {
     try {
-      const res = await fetch("/api/cars");
+      loadMore ? setLoadingMore(true) : setLoading(true);
+
+      const res = await fetch(
+        `/api/cars?limit=10${cursor && loadMore ? `&cursor=${cursor}` : ""}`,
+      );
+
       const data = await res.json();
-      setCars(data.cars || data); // تأكد من البنية
+
+      setCars((prev) => (loadMore ? [...prev, ...data.cars] : data.cars));
+
+      setCursor(data.nextCursor ?? null);
+      setHasMore(Boolean(data.nextCursor));
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
     }
   };
-
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         setLoading(true);
         await fetchSession();
-        await fetchAllCars();
+        fetchAllCars(false); // أول صفحة فقط
         console.log("Session:", currentUser);
         console.log("Cars:", cars);
       } catch (err) {
@@ -140,7 +163,8 @@ export default function DashboardCarsPage() {
     fetchAllData();
   }, []);
 
-  if (loading) return <UniLoading />;
+  // if (loading) return <UniLoading />;
+  if (loading && cars.length === 0) return <UniLoading />;
 
   function statusInArabic(status: string) {
     if (status === "available") return "متاحة";
@@ -396,6 +420,17 @@ export default function DashboardCarsPage() {
           </tbody>
         </table>
       </div>
+      {hasMore && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => fetchAllCars(true)}
+            disabled={loadingMore}
+            className="px-6 py-2 rounded-md bg-black text-white hover:bg-gray-800 disabled:opacity-50"
+          >
+            {loadingMore ? "جاري التحميل..." : "تحميل المزيد"}
+          </button>
+        </div>
+      )}
 
       {/* ---------------- Add / Edit Modal ---------------- */}
       {(isEditing || isAdding) && (

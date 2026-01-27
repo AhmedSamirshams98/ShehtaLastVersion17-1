@@ -8,7 +8,7 @@ const HomeMarque = () => {
     <div className="text-white  w-[87%] md:w-[70%] lg:w-[78%] mt-[1%] mb-[1%]  flex flex-col  ">
       <Marquee direction="left" speed={40} pauseOnHover={true}>
         <Image
-          quality={50}
+          quality={75}
           className="w-full"
           src={marque1}
           alt="shehtaTrading Cars Logo"

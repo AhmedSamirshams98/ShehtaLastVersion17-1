@@ -66,21 +66,36 @@ export default function DashboardPage() {
     }
   };
 
-  const { availableCars, fetchAvailableCars, stats, fetchStats, loading } =
-    useCarStore();
+  // const { availableCars, fetchAvailableCars, stats, fetchStats, loading } =
+  //   useCarStore();
+  const {
+    availableCars,
+    fetchAvailableCars,
+    availableCarsHasMore,
+    loadingAvailableCars,
+    stats,
+    fetchStats,
+    loading,
+  } = useCarStore();
 
+  // useEffect(() => {
+  //   const fetchAllData = async () => {
+  //     await fetchSession();
+  //     await fetchStats();
+  //     await fetchAvailableCars();
+  //   };
+
+  //   fetchAllData();
+  // }, []);
   useEffect(() => {
-    const fetchAllData = async () => {
-      await fetchSession();
-      await fetchStats();
-      await fetchAvailableCars();
-    };
-
-    fetchAllData();
+    fetchSession();
+    fetchStats();
+    fetchAvailableCars(false); // أول صفحة فقط
   }, []);
+  // if (!stats) return <UniLoading />;
+  //   if (!stats) return null;
+  if (!stats) return <UniLoading />;
 
-  if (loading) return <UniLoading />;
-  if (!stats) return null;
   const {
     totalCars,
     availableCars: availableCarsCount,
@@ -363,6 +378,17 @@ export default function DashboardPage() {
           </tbody>
         </table>
       </div>
+      {availableCarsHasMore && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => fetchAvailableCars(true)}
+            disabled={loadingAvailableCars}
+            className="px-6 py-2 rounded-md bg-black text-white hover:bg-gray-800 disabled:opacity-50"
+          >
+            {loadingAvailableCars ? "جاري التحميل..." : "تحميل المزيد"}
+          </button>
+        </div>
+      )}
 
       {isEditing && editingCar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
