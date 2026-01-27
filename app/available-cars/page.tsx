@@ -9,17 +9,19 @@ import Link from "next/link";
 import EmblaCarouselSlider from "../components/emblaCarouselSlider/EmblaCarouselSlider";
 
 const AvailableCarsPage = () => {
-  const { cars, fetchCars } = useCarStore();
+  const { availableCars, fetchAvailableCars, availableCarsHasMore } = useCarStore();
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [visibleCars, setVisibleCars] = useState(8); // أول 8 سيارات
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    fetchCars();
-  }, [fetchCars]);
+    fetchAvailableCars();
+  }, [fetchAvailableCars]);
 
   // ✅ السيارات المتاحة فقط
-  const availableCars = cars.filter((car) => car.status === "available");
+  // const availableCars = cars.filter((car) => car.status === "available");
 
   // ✅ الماركات فقط من السيارات المتاحة
   const uniqueBrands = Array.from(
@@ -110,7 +112,7 @@ const AvailableCarsPage = () => {
       {/* Cars Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredCars.length > 0 ? (
-          filteredCars.map((car) => {
+          filteredCars.slice(0, visibleCars).map((car) => {
             const slides = car.car_images.map((img, i) => (
               <div key={i} className="relative w-full aspect-square">
                 <Image
@@ -186,6 +188,26 @@ const AvailableCarsPage = () => {
           </p>
         )}
       </div>
+      {visibleCars < filteredCars.length || availableCarsHasMore ? (
+  <div className="flex justify-center mt-6">
+    <button
+      onClick={async () => {
+        if (visibleCars < filteredCars.length) {
+          // فقط إظهار المزيد من السيارات المحلية
+          setVisibleCars(prev => prev + 8);
+        } else if (availableCarsHasMore) {
+          // تحميل سيارات إضافية من API
+          await fetchAvailableCars(true);
+          setVisibleCars(prev => prev + 8);
+        }
+      }}
+      className="bg-[#FDB800] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors"
+    >
+      عرض المزيد
+    </button>
+  </div>
+) : null}
+
     </div>
   );
 };

@@ -12,8 +12,10 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const router = useRouter();
 
-  const { cars, fetchCars } = useCarStore();
+  const { cars, fetchCars, carsHasMore } = useCarStore();
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
+  const [visibleCars, setVisibleCars] = useState(8); // أول 8 سيارات
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   function openDialer() {
@@ -56,6 +58,8 @@ const Page = () => {
   // دالة لاختيار brand من الدروب داون
   const handleBrandSelect = (brand: string) => {
     setSelectedBrand(brand);
+    setVisibleCars(8); // إعادة تعيين السيارات المعروضة
+
     setIsDropdownOpen(false);
   };
 
@@ -64,6 +68,8 @@ const Page = () => {
     if (selectedBrand === "all") return "كل السيارات";
     return selectedBrand;
   };
+
+  const carsToDisplay = filteredCars.slice(0, visibleCars);
 
   return (
     <div
@@ -149,8 +155,8 @@ const Page = () => {
 
       {/* Cars Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
-        {filteredCars.length > 0 ? (
-          filteredCars.map((car) => {
+        {carsToDisplay.length > 0 ? (
+          carsToDisplay.map((car) => {
             const carSlides = car.car_images.map((img, index) => (
               <div key={index} className="slider-slide object-cover">
                 <Image
@@ -250,6 +256,21 @@ const Page = () => {
           </div>
         )}
       </div>
+      {(visibleCars < filteredCars.length || carsHasMore) && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={async () => {
+              if (visibleCars >= filteredCars.length && carsHasMore) {
+                await fetchCars(true); // جلب سيارات إضافية من API
+              }
+              setVisibleCars((prev) => prev + 8);
+            }}
+            className="bg-[#FDB800] text-black px-6 py-2 rounded-lg hover:bg-yellow-500 transition-colors text-[3vw] md:text-[1.5vw]"
+          >
+            تحميل المزيد
+          </button>
+        </div>
+      )}
     </div>
   );
 };

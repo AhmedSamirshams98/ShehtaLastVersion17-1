@@ -20,7 +20,7 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
   const pathname = usePathname();
 
   const aspectClass =
-    pathname === "/" || pathname === "/allcars"
+    pathname === "/" || pathname === "/allcars" || "/available-cars"
       ? "aspect-square"
       : "aspect-video";
   const { slides, options } = props;
