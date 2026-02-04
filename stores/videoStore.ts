@@ -16,6 +16,8 @@ interface VideoStore {
   removeClient: (id: number) => Promise<void>;
   updateReel: (id: number, src: string) => Promise<void>;
   updateClient: (id: number, src: string) => Promise<void>;
+  makeLatestReel: (id: number) => Promise<void>;
+  
 }
 
 export const useVideoStore = create<VideoStore>((set, get) => ({
@@ -32,6 +34,7 @@ export const useVideoStore = create<VideoStore>((set, get) => ({
       console.error("Failed to fetch reels", error);
     }
   },
+  
 
   // جلب فيديوهات العملاء من DB
   fetchClients: async () => {
@@ -87,5 +90,18 @@ export const useVideoStore = create<VideoStore>((set, get) => ({
     set((state) => ({
       clients: state.clients.map((v) => (v.id === id ? { ...v, src } : v)),
     }));
+  },
+    // === دوال جعل الفيديو الأخير هو الأحدث ===
+  makeLatestReel: async (id: number) => {
+    try {
+      await fetch("/api/reels", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, makeLatest: true}),
+      });
+      get().fetchReels(); // إعادة تحميل الفيديوهات
+    } catch (err) {
+      console.error(err);
+    }
   },
 }));

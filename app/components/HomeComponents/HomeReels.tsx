@@ -9,9 +9,10 @@ interface Props {
   isDashboard?: boolean;
   onDelete?: (id: number) => void;
   onEdit?: (src: string) => void;
+  onMakeLatest?: (id: number) => void; // <-- جديد
 }
 
-const HomeReels = ({ isDashboard, onDelete, onEdit }: Props) => {
+const HomeReels = ({ isDashboard, onDelete, onEdit , onMakeLatest  }: Props) => {
   const reels = useVideoStore((state) => state.reels);
   const fetchReels = useVideoStore((state) => state.fetchReels);
 
@@ -34,6 +35,12 @@ const HomeReels = ({ isDashboard, onDelete, onEdit }: Props) => {
             className="bg-red-600 text-white px-3 py-1 rounded text-xs"
           >
             حذف
+          </button>
+          <button
+            onClick={() => onMakeLatest?.(reel.id)} // <-- جديد
+            className="bg-blue-600 text-white px-3 py-1 rounded text-xs"
+          >
+            اجعله الأحدث
           </button>
         </div>
       )}

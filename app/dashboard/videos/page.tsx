@@ -20,6 +20,8 @@ const VideoDashboard = () => {
     addClient,
     removeReel,
     removeClient,
+      makeLatestReel,    // <-- جديد
+
   } = useVideoStore();
 
   const [reelInput, setReelInput] = useState("");
@@ -60,6 +62,8 @@ const VideoDashboard = () => {
           isDashboard
           onDelete={removeReel}
           onEdit={(src) => setReelInput(src)}
+            onMakeLatest={(id) => makeLatestReel(id)} // <-- جديد
+
         />
       </section>
 

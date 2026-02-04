@@ -77,10 +77,10 @@ model forms {
 model Reel {
   id        Int      @id @default(autoincrement())
   src       String
+  isLatest  Boolean  @default(false) // يحدد إذا كان هذا الفيديو هو الأحدث
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 model ClientsVideo {
   id        Int      @id @default(autoincrement())
   src       String
